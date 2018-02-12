@@ -6,10 +6,7 @@
 
 <script>
 export default {
-  name: 'App',
-  created: function () {
-    this.$axios.get('/');
-  }
+  name: 'App'
 }
 </script>
 
