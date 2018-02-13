@@ -48,9 +48,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                 }
                 String token = authorization.substring(7);
                 Map<String, String> claims = JwtUtil.decode(token);
-                if (!claims.containsKey("user_id"))
+                if (!claims.containsKey("user_id") || !claims.containsKey("user_type"))
                     throw new InvalidTokenException("Cannot find user information in Token");
                 request.setAttribute("user_id", claims.get("user_id"));
+                request.setAttribute("user_type", claims.get("user_type"));
 
                 return super.preHandle(request, response, handler);
             }

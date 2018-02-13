@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 import {eventBus} from '../services/eventbus';
 
@@ -7,7 +6,6 @@ export default {
     Vue.prototype.$axios = axios;
 
     axios.defaults.baseURL = 'http://localhost:8080/api';
-    axios.defaults.headers.common['Authorization'] = 'Bearer ';
 
     // Add a request interceptor
     axios.interceptors.request.use(config => {
@@ -27,11 +25,17 @@ export default {
       eventBus.end();
       // console.log('Global Response Error Handler: ', error);
       if (error.response && error.response.data) {
+        let msg = error.response.data.errorMessage;
+
         if (error.response.data.errorType === 'TokenExpiredException') {
-          eventBus.alert('登录超时,请重新登录', '错误');
-        } else {
-          eventBus.alert(error.response.data.errorMessage, '错误');
+          msg = '登录超时,请重新登录';
+        } else if (error.response.data.errorType === 'TokenNotFoundException') {
+          msg = '无法识别身份信息, 请登录';
+        } else if (error.response.data.errorType === 'InvalidTokenException') {
+          msg = '无效的身份信息, 请重新登录';
         }
+
+        eventBus.alert(msg, '错误');
       }
       return Promise.reject(error);
     });

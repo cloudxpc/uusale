@@ -1,5 +1,6 @@
 package com.uutic.uusale.controller;
 
+import com.uutic.uusale.dto.LoginResultDto;
 import com.uutic.uusale.dto.UserDto;
 import com.uutic.uusale.entity.Merchant;
 import com.uutic.uusale.entity.User;
@@ -8,6 +9,7 @@ import com.uutic.uusale.exceptions.CustomException;
 import com.uutic.uusale.service.MerchantService;
 import com.uutic.uusale.service.UserService;
 import com.uutic.uusale.util.CaptchaCodeUtil;
+import com.uutic.uusale.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -30,16 +34,26 @@ public class UserController {
     private MerchantService merchantService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@RequestBody UserDto userDto) throws Exception {
+    public LoginResultDto login(@RequestBody UserDto userDto) throws Exception {
         if (StringUtils.isEmpty(userDto.getUsername()) || StringUtils.isEmpty(userDto.getPassword()))
             throw new CustomException("请输入用户名及密码");
         User user = userService.find(userDto);
-        if (user != null)
-            return "U";
+        if (user != null) {
+            Map<String, String> claims = new HashMap<>();
+            claims.put("user_id", user.getId());
+            claims.put("user_type", "U");
+            String token = JwtUtil.encode(claims);
+            return new LoginResultDto("U", token);
+        }
 
         Merchant merchant = merchantService.find(userDto);
-        if (merchant != null)
-            return "M";
+        if (merchant != null){
+            Map<String, String> claims = new HashMap<>();
+            claims.put("user_id", merchant.getId());
+            claims.put("user_type", "M");
+            String token = JwtUtil.encode(claims);
+            return new LoginResultDto("M", token);
+        }
 
         throw new CustomException("用户名或密码不正确");
     }

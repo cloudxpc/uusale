@@ -63,9 +63,12 @@
 
         this.$axios.post('/user/login', this.user).then(response => {
           if (response && response.status === 200) {
-            if (response.data === 'U')
+            if (response.data.token)
+              this.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
+
+            if (response.data.userType === 'U')
               this.$router.replace('/user');
-            else if (response.data === 'M')
+            else if (response.data.userType === 'M')
               this.$router.replace('/mch');
             else
               this.$eventBus.alert('未知登录返回值');
