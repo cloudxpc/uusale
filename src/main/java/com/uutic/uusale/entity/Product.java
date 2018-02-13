@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class Product {
     @Id
     @Column(name = "id")
-    private Long id;
+    private String id;
     @Column(name = "mch_id")
     private String mchId;
     @Column(name = "name")
@@ -23,11 +23,11 @@ public class Product {
     @Column(name = "img_path")
     private String imgPath;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

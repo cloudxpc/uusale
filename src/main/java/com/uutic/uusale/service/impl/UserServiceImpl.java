@@ -18,7 +18,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User find(UserDto userDto) throws Exception {
-        return userRepository.findByUsernameAndPassword(userDto.getUsername().trim(), Md5Util.MD5(userDto.getPassword().trim()));
+        User user = userRepository.findByUsernameAndPassword(userDto.getUsername().trim(), Md5Util.MD5(userDto.getPassword().trim()));
+        if (user == null)
+            user = userRepository.findByPhoneNumberAndPassword(userDto.getUsername().trim(), Md5Util.MD5(userDto.getPassword().trim()));
+
+        return user;
     }
 
     @Override

@@ -1,5 +1,6 @@
 
 import {accounting} from 'accounting/accounting.min';
+import {eventBus} from '../services/eventbus';
 
 export default {
   install: function(Vue, options) {
@@ -19,5 +20,7 @@ export default {
       if (!value) value = 0;
       return accounting.formatMoney(value, '￥', 2);
     };
+
+    Vue.prototype.$eventBus = eventBus;
   }
 }

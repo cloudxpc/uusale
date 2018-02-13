@@ -20,7 +20,7 @@ new Vue({
   el: '#app',
   indicator: null,
   router,
-  components: { App },
+  components: {App},
   template: '<App/>',
   created() {
     eventBus.$on('loading-start', () => {
@@ -33,9 +33,21 @@ new Vue({
         this.indicator = null;
       }
     });
+    eventBus.$on('alert', (data) => {
+      if (data.callback && data.title) {
+        weui.alert(data.msg, data.callback, {title: data.title});
+      } else {
+        if (data.callback)
+          weui.alert(data.msg, data.callback);
+        else if (data.title)
+          weui.alert(data.msg, {title: data.title});
+        else
+          weui.alert(data.msg);
+      }
+    });
   },
   destroyed() {
     eventBus.$off('loading-start');
     eventBus.$off('loading-end');
   }
-})
+});

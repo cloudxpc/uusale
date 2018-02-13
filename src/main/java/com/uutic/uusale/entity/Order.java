@@ -12,7 +12,7 @@ import java.util.Date;
 public class Order {
     @Id
     @Column(name = "id")
-    private Long id;
+    private String id;
     @Column(name = "user_id")
     private String userId;
     @Column(name = "order_no")
@@ -26,11 +26,11 @@ public class Order {
     @Column(name = "last_update_time")
     private Date lastUpdateTime;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
