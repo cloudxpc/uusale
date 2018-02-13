@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userDto.getUsername().trim());
         user.setPassword(Md5Util.MD5(userDto.getPassword().trim()));
         user.setDisplayName(userDto.getDisplayName().trim());
-        user.setPhoneNumber(userDto.getPhoneNumber());
+        user.setPhoneNumber(userDto.getPhoneNumber().trim());
         userRepository.save(user);
         return user;
     }

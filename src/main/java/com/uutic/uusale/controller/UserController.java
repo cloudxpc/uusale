@@ -1,9 +1,11 @@
 package com.uutic.uusale.controller;
 
 import com.uutic.uusale.dto.UserDto;
+import com.uutic.uusale.entity.Merchant;
 import com.uutic.uusale.entity.User;
 import com.uutic.uusale.exceptions.CaptchaInvalidException;
 import com.uutic.uusale.exceptions.CustomException;
+import com.uutic.uusale.service.MerchantService;
 import com.uutic.uusale.service.UserService;
 import com.uutic.uusale.util.CaptchaCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +26,22 @@ import java.util.Base64;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private MerchantService merchantService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public void login(@RequestBody UserDto userDto) throws Exception {
+    public String login(@RequestBody UserDto userDto) throws Exception {
         if (StringUtils.isEmpty(userDto.getUsername()) || StringUtils.isEmpty(userDto.getPassword()))
             throw new CustomException("请输入用户名及密码");
         User user = userService.find(userDto);
-        if (user == null)
-            throw new CustomException("用户名或密码不正确");
+        if (user != null)
+            return "U";
+
+        Merchant merchant = merchantService.find(userDto);
+        if (merchant != null)
+            return "M";
+
+        throw new CustomException("用户名或密码不正确");
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -39,10 +49,21 @@ public class UserController {
         Object captchaCode = request.getSession().getAttribute("captcha_code");
         if (captchaCode == null || !userDto.getCaptchaCode().trim().toUpperCase().equals(captchaCode.toString()))
             throw new CaptchaInvalidException("验证码错误");
-        if (userService.check(userDto.getUsername().trim()))
+        if (userService.check(userDto.getUsername().trim()) || merchantService.check(userDto.getUsername().trim()))
             throw new CustomException("用户已经存在");
 
         userService.save(userDto);
+    }
+
+    @RequestMapping(value = "/mch/register", method = RequestMethod.POST)
+    public void registerMch(@RequestBody UserDto userDto, HttpServletRequest request) throws Exception {
+        Object captchaCode = request.getSession().getAttribute("captcha_code");
+        if (captchaCode == null || !userDto.getCaptchaCode().trim().toUpperCase().equals(captchaCode.toString()))
+            throw new CaptchaInvalidException("验证码错误");
+        if (merchantService.check(userDto.getUsername().trim()) || userService.check(userDto.getUsername().trim()))
+            throw new CustomException("用户已经存在");
+
+        merchantService.save(userDto);
     }
 
     @RequestMapping(value = "/captcha", method = RequestMethod.GET)

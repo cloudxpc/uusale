@@ -63,7 +63,12 @@
 
         this.$axios.post('/user/login', this.user).then(response => {
           if (response && response.status === 200) {
-            this.$router.replace('/user');
+            if (response.data === 'U')
+              this.$router.replace('/user');
+            else if (response.data === 'M')
+              this.$router.replace('/mch');
+            else
+              this.$eventBus.alert('未知登录返回值');
           }
         });
       }
