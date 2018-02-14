@@ -13,7 +13,7 @@
                   :key="img.id"
                   class="weui-uploader__file"
                   :data-id="img.id"
-                  :style="'background-image: url(\'' + $eventBus.baseUrl + '/static/' + img.name + '\');'"></li>
+                  :style="'background-image: url(\'' + $eventBus.imgBaseUrl + img.name + '\');'"></li>
             </ul>
             <div class="weui-uploader__input-box">
               <input name="file" id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*"

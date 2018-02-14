@@ -22,7 +22,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**").addResourceLocations("file:c:\\rick\\");
+        registry.addResourceHandler("/pic/**").addResourceLocations("file:/Users/Rick/Downloads/temp_images/");
     }
 
     //DEV only

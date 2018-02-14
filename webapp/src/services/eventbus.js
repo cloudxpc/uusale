@@ -1,8 +1,13 @@
 import Vue from 'vue';
 
 export const eventBus = new Vue({
-  data: {
-    baseUrl: 'http://localhost:8080'
+  computed: {
+    baseUrl: function () {
+      return 'http://localhost:8080';
+    },
+    imgBaseUrl: function () {
+      return this.baseUrl + '/pic/';
+    }
   },
   methods: {
     alert: function (msg, titleOrCallback, callback) {
