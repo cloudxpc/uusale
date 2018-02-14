@@ -25,6 +25,11 @@ public class MerchantServiceImpl implements MerchantService {
     }
 
     @Override
+    public Merchant find(String id) {
+        return merchantRepository.findOne(id);
+    }
+
+    @Override
     public Boolean check(String username) {
         return merchantRepository.existsByUsername(username);
     }

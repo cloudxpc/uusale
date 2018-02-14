@@ -33,11 +33,16 @@
           <textarea class="weui-textarea" placeholder="请输入商品描述" rows="3" v-model="product.description"></textarea>
           <div class="weui-textarea-counter"><span>{{descNum}}</span>/100</div>
         </div>
+        <div v-if="validation.description" class="weui-cell__ft">
+          <i class="weui-icon-warn"></i>
+        </div>
       </div>
     </div>
     <div class="weui-cells__title">商品图片</div>
-    <uploader></uploader>
-    <img src="../assets/logo.png"/>
+    <uploader v-model="product.images"></uploader>
+    <div class="weui-btn-area">
+      <button type="button" class="weui-btn weui-btn_primary" @click="submit">提交</button>
+    </div>
   </div>
 </template>
 
@@ -58,11 +63,9 @@
           images: []
         },
         validation: {
-          id: null,
-          name: null,
-          description: null,
-          price: null,
-          images: []
+          name: false,
+          description: false,
+          price: false
         }
       };
     },
@@ -88,7 +91,36 @@
     },
     methods: {
       init: function () {
+        if (!this.isNew) {
+          this.$axios.get('/product?id=' + this.id).then(response => {
+            if (response && response.data) {
+              this.product = response.data;
+            }
+          });
+        }
+      },
+      validate: function () {
+        this.validation.name = !this.product.name;
+        this.validation.price = !this.priceAmt;
+        this.validation.description = this.descNum > 100;
 
+        return !this.validation.name
+          && !this.validation.price
+          && !this.validation.description;
+      },
+      submit: function () {
+        if (!this.validate())
+          return;
+
+        this.product.price = this.priceAmt;
+
+        this.$axios.post('/product/save', this.product).then(response => {
+          if (response && response.data) {
+            this.$eventBus.alert('保存成功', () => {
+              this.$router.push('/product/' + this.mode + '/' + response.data);
+            });
+          }
+        });
       }
     },
     watch: {

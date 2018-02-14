@@ -5,12 +5,22 @@ import java.util.List;
 
 public class ProductDto {
     private String id;
+    private String mchId;
     private String name;
     private String description;
     private BigDecimal price;
     private List<String> images;
 
+    public String getMchId() {
+        return mchId;
+    }
+
+    public void setMchId(String mchId) {
+        this.mchId = mchId;
+    }
+
     public String getId() {
+
         return id;
     }
 

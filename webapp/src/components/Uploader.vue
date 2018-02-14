@@ -8,7 +8,13 @@
             <div class="weui-uploader__info">{{uploadCount}}/{{maxUploadCount}}</div>
           </div>
           <div class="weui-uploader__bd">
-            <ul class="weui-uploader__files" id="uploaderFiles" @click="preview"></ul>
+            <ul class="weui-uploader__files" id="uploaderFiles" @click="preview">
+              <li v-for="img in initImages"
+                  :key="img.id"
+                  class="weui-uploader__file"
+                  :data-id="img.id"
+                  :style="'background-image: url(\'' + $eventBus.baseUrl + '/static/' + img.name + '\');'"></li>
+            </ul>
             <div class="weui-uploader__input-box">
               <input name="file" id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*"
                      capture="camera" multiple=""/>
@@ -26,12 +32,33 @@
 
   export default {
     name: 'Uploader',
+    props: ['value'],
     data: function () {
       return {
         uploadCount: 0,
         maxUploadCount: 5,
-        imageList: []
+        imageList: [],
+        initImages: [],
+        hasInit: false
       };
+    },
+    watch: {
+      value: function (v) {
+        if (!this.hasInit) {
+          this.hasInit = true;
+          if (v && v.length) {
+            for (let i = 0; i < v.length; i++) {
+              this.initImages.push({id: v[i], name: v[i]});
+            }
+            this.uploadCount = this.initImages.length;
+          }
+        }
+      }
+    },
+    computed: {
+      imageNames: function () {
+        return this.imageList.map(il => il.name).concat(this.initImages.map(i => i.name));
+      }
     },
     mounted: function () {
       let vm = this;
@@ -57,8 +84,8 @@
             weui.alert('请上传不超过10M的图片');
             return false;
           }
-          if (files.length > 5) { // 防止一下子选择过多文件
-            weui.alert('最多只能上传5张图片，请重新选择');
+          if (files.length > vm.maxUploadCount) { // 防止一下子选择过多文件
+            weui.alert('最多只能上传' + vm.maxUploadCount + '张图片，请重新选择');
             return false;
           }
           if (vm.uploadCount + 1 > vm.maxUploadCount) {
@@ -88,7 +115,7 @@
           // $.extend(data, { test: 1 }); // 可以扩展此对象来控制上传参数
           // $.extend(headers, { Origin: 'http://127.0.0.1' }); // 可以扩展此对象来控制上传头部
 
-          $.extend(headers, { Authorization: vm.$axios.defaults.headers.common['Authorization'] });
+          $.extend(headers, {Authorization: vm.$axios.defaults.headers.common['Authorization']});
 
           // return false; // 阻止文件上传
         },
@@ -102,6 +129,7 @@
           // console.log(this, ret);
 
           vm.imageList.push({id: this.id, name: ret});
+          vm.$emit('input', vm.imageNames);
           // return true; // 阻止默认行为，不使用默认的成功态
         },
         onError: function (err) {
@@ -133,8 +161,15 @@
                   break;
                 }
               }
+              for (let i = 0; i < this.initImages.length; i++) {
+                if (this.initImages[i].id.toString() === id) {
+                  this.initImages.splice(i, 1);
+                  break;
+                }
+              }
               target.remove();
               gallery.hide();
+              this.$emit('input', this.imageNames);
             });
           }
         });

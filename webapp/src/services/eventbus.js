@@ -1,6 +1,9 @@
 import Vue from 'vue';
 
 export const eventBus = new Vue({
+  data: {
+    baseUrl: 'http://localhost:8080'
+  },
   methods: {
     alert: function (msg, titleOrCallback, callback) {
       let data = {};

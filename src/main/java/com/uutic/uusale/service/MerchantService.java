@@ -5,6 +5,7 @@ import com.uutic.uusale.entity.Merchant;
 
 public interface MerchantService {
     Merchant find(UserDto userDto) throws Exception;
+    Merchant find(String id);
     Boolean check(String username);
     Merchant save(UserDto userDto) throws Exception;
 }
