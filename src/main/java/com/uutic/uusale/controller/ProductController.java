@@ -1,8 +1,10 @@
 package com.uutic.uusale.controller;
 
 import com.uutic.uusale.dto.ProductDto;
+import com.uutic.uusale.dto.ProductPriceDto;
 import com.uutic.uusale.entity.Merchant;
 import com.uutic.uusale.entity.Product;
+import com.uutic.uusale.entity.ProductPrice;
 import com.uutic.uusale.exceptions.CustomException;
 import com.uutic.uusale.service.MerchantService;
 import com.uutic.uusale.service.ProductService;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/product")
@@ -25,12 +29,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @RequestMapping("")
-    public ProductDto get(@RequestParam String id){
-        Product product = productService.find(id);
-        if (product == null)
-            throw new CustomException("找不到商品");
-
+    private ProductDto entityToDto(Product product){
         ProductDto productDto = new ProductDto();
         productDto.setId(product.getId());
         productDto.setName(product.getName());
@@ -39,6 +38,23 @@ public class ProductController {
         productDto.setImages(StringUtils.isEmpty(product.getImgs()) ? new ArrayList<>() : Arrays.asList(product.getImgs().split(";")));
 
         return productDto;
+    }
+
+    private ProductPriceDto entityToDto(ProductPrice productPrice){
+        ProductPriceDto productPriceDto = new ProductPriceDto();
+        productPriceDto.setId(productPrice.getId());
+        productPriceDto.setDate(productPrice.getTimestamp());
+        productPriceDto.setPrice(productPrice.getPrice());
+        return productPriceDto;
+    }
+
+    @RequestMapping("")
+    public ProductDto get(@RequestParam String id){
+        Product product = productService.find(id);
+        if (product == null)
+            throw new CustomException("找不到商品");
+
+        return entityToDto(product);
     }
 
     @RequestMapping("/list")
@@ -57,5 +73,18 @@ public class ProductController {
         productDto.setMchId(merchant.getId());
 
         return productService.save(productDto);
+    }
+
+    @RequestMapping("/price")
+    public ProductDto getPriceHistory(@RequestParam String id){
+        Product product = productService.find(id);
+        if (product == null)
+            throw new CustomException("找不到商品");
+
+        ProductDto productDto = entityToDto(product);
+        List<ProductPrice> allPrice = productService.findAllPrice(product.getId());
+        List<ProductPriceDto> priceDtos = allPrice.stream().map(this::entityToDto).collect(Collectors.toList());
+        productDto.setProductPrices(priceDtos);
+        return productDto;
     }
 }

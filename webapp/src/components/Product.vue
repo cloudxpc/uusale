@@ -25,6 +25,9 @@
           <i class="weui-icon-warn"></i>
         </div>
       </div>
+      <router-link :to="'/product-price/' + id" class="weui-cell weui-cell_link">
+        <div class="weui-cell__bd">查看更多历史价格</div>
+      </router-link>
     </div>
     <div class="weui-cells__title">商品描述</div>
     <div class="weui-cells">

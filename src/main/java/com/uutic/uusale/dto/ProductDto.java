@@ -10,6 +10,7 @@ public class ProductDto {
     private String description;
     private BigDecimal price;
     private List<String> images;
+    private List<ProductPriceDto> productPrices;
 
     public String getMchId() {
         return mchId;
@@ -58,5 +59,13 @@ public class ProductDto {
 
     public void setImages(List<String> images) {
         this.images = images;
+    }
+
+    public List<ProductPriceDto> getProductPrices() {
+        return productPrices;
+    }
+
+    public void setProductPrices(List<ProductPriceDto> productPrices) {
+        this.productPrices = productPrices;
     }
 }

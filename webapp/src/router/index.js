@@ -9,6 +9,7 @@ import ProductList from '../components/ProductList';
 import Merchant from '../components/Merchant';
 import MchProductList from '../components/MchProductList';
 import Product from '../components/Product';
+import ProductPrice from '../components/ProductPrice';
 
 Vue.use(Router);
 
@@ -27,6 +28,7 @@ export default new Router({
         { path: '*', name: 'MchNotFound', component: NotFound }
       ] },
     { path: '/product/:mode/:id', name: 'Product', component: Product, props: true },
+    { path: '/product-price/:id', name: 'ProductPrice', component: ProductPrice, props: true },
     { path: '*', name: 'NotFound', component: NotFound }
   ]
 })

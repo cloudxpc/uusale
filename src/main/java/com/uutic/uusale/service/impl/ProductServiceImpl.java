@@ -79,4 +79,9 @@ public class ProductServiceImpl implements ProductService {
             return product.getId();
         }
     }
+
+    @Override
+    public List<ProductPrice> findAllPrice(String id) {
+        return productPriceRepository.findByProductId(id);
+    }
 }
