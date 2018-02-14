@@ -10,10 +10,7 @@ import com.uutic.uusale.service.MerchantService;
 import com.uutic.uusale.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -48,7 +45,7 @@ public class ProductController {
         return productPriceDto;
     }
 
-    @RequestMapping("")
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public ProductDto get(@RequestParam String id){
         Product product = productService.find(id);
         if (product == null)
@@ -57,14 +54,13 @@ public class ProductController {
         return entityToDto(product);
     }
 
-    @RequestMapping("/list")
-    public String list(HttpServletRequest request) {
-        Object user_id = request.getAttribute("user_id");
-        Object user_type = request.getAttribute("user_type");
-        return user_id + ":" + user_type;
+    @RequestMapping(value = "/mch/list", method = RequestMethod.GET)
+    public List<ProductDto> list(HttpServletRequest request) {
+        List<Product> products = productService.findByMchId(request.getAttribute("user_id").toString());
+        return products.stream().map(this::entityToDto).collect(Collectors.toList());
     }
 
-    @RequestMapping("/save")
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String save(HttpServletRequest request, @RequestBody ProductDto productDto) {
         Merchant merchant = merchantService.find(request.getAttribute("user_id").toString());
         if (merchant == null)
@@ -75,7 +71,7 @@ public class ProductController {
         return productService.save(productDto);
     }
 
-    @RequestMapping("/price")
+    @RequestMapping(value = "/price", method = RequestMethod.GET)
     public ProductDto getPriceHistory(@RequestParam String id){
         Product product = productService.find(id);
         if (product == null)

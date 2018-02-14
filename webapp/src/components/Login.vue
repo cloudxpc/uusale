@@ -67,9 +67,9 @@
               this.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
 
             if (response.data.userType === 'U')
-              this.$router.replace('/user');
+              this.$router.replace('/user/products');
             else if (response.data.userType === 'M')
-              this.$router.replace('/mch');
+              this.$router.replace('/mch/products');
             else
               this.$eventBus.alert('未知登录返回值');
           }

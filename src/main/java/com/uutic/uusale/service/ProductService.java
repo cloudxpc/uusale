@@ -9,6 +9,7 @@ import java.util.List;
 public interface ProductService {
     Product find(String id);
     Product find(String id, String mchId);
+    List<Product> findByMchId(String mchId);
     String save(ProductDto productDto);
     List<ProductPrice> findAllPrice(String id);
 }

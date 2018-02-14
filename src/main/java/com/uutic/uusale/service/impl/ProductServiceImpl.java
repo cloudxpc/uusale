@@ -36,6 +36,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> findByMchId(String mchId) {
+        return productRepository.findByMchId(mchId);
+    }
+
+    @Override
     @Transactional
     public String save(ProductDto productDto) {
         if (StringUtils.isEmpty(productDto.getId())) {
