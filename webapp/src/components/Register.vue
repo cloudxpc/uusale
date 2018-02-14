@@ -69,9 +69,9 @@
           <img class="weui-vcode-img" :src="captchaCodeSrc" @click="refreshCaptchaCode">
         </div>
       </div>
-      <div class="weui-btn-area">
-        <button type="button" class="weui-btn weui-btn_primary" @click.prevent="submit">提交</button>
-      </div>
+    </div>
+    <div class="weui-btn-area">
+      <button type="button" class="weui-btn weui-btn_primary" @click.prevent="submit">提交</button>
     </div>
   </div>
 </template>

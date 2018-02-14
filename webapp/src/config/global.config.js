@@ -20,6 +20,10 @@ export default {
       if (!value) value = 0;
       return accounting.formatMoney(value, '￥', 2);
     };
+    Vue.prototype.$amount = function (value) {
+      if (!value) value = 0;
+      return accounting.unformat(accounting.formatMoney(value, '￥', 2));
+    };
 
     Vue.prototype.$eventBus = eventBus;
   }

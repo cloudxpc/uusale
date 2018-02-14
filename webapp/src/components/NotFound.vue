@@ -20,8 +20,4 @@
     margin: 0;
     transform: translate(-50%, -60%);
   }
-
-  div {
-    min-height: 100vh;
-  }
 </style>

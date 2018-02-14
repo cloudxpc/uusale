@@ -1,27 +1,14 @@
-package com.uutic.uusale.entity;
+package com.uutic.uusale.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.List;
 
-@Entity
-@Table(name = "product")
-public class Product {
-    @Id
-    @Column(name = "id")
+public class ProductDto {
     private String id;
-    @Column(name = "mch_id")
-    private String mchId;
-    @Column(name = "name")
     private String name;
-    @Column(name = "description")
     private String description;
-    @Column(name = "price")
     private BigDecimal price;
-    @Column(name = "imgs")
-    private String imgs;
+    private List<String> images;
 
     public String getId() {
         return id;
@@ -29,14 +16,6 @@ public class Product {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getMchId() {
-        return mchId;
-    }
-
-    public void setMchId(String mchId) {
-        this.mchId = mchId;
     }
 
     public String getName() {
@@ -63,11 +42,11 @@ public class Product {
         this.price = price;
     }
 
-    public String getImgs() {
-        return imgs;
+    public List<String> getImages() {
+        return images;
     }
 
-    public void setImgs(String imgs) {
-        this.imgs = imgs;
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 }
