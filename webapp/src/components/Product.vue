@@ -39,7 +39,7 @@
       </div>
     </div>
     <div class="weui-cells__title">商品图片</div>
-    <uploader v-model="product.images"></uploader>
+    <uploader :value="product.images" @change="imageListChanged"></uploader>
     <div class="weui-btn-area">
       <button type="button" class="weui-btn weui-btn_primary" @click="submit">提交</button>
     </div>
@@ -55,6 +55,7 @@
     props: ['id', 'mode'],
     data: function () {
       return {
+        updatedImageList: [],
         product: {
           id: null,
           name: null,
@@ -90,14 +91,36 @@
       }
     },
     methods: {
+      reset: function () {
+        this.product = {
+          id: null,
+          name: null,
+          description: null,
+          price: null,
+          images: []
+        };
+        this.validation = {
+          name: false,
+          description: false,
+          price: false
+        };
+        this.updatedImageList = [];
+      },
       init: function () {
+
+        this.reset();
+
         if (!this.isNew) {
           this.$axios.get('/product?id=' + this.id).then(response => {
             if (response && response.data) {
               this.product = response.data;
+              this.updatedImageList = this.product.images;
             }
           });
         }
+      },
+      imageListChanged: function (v) {
+        this.updatedImageList = v;
       },
       validate: function () {
         this.validation.name = !this.product.name;
@@ -113,6 +136,7 @@
           return;
 
         this.product.price = this.priceAmt;
+        this.product.images = this.updatedImageList;
 
         this.$axios.post('/product/save', this.product).then(response => {
           if (response && response.data) {

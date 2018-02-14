@@ -9,7 +9,7 @@
           </div>
           <div class="weui-uploader__bd">
             <ul class="weui-uploader__files" id="uploaderFiles" @click="preview">
-              <li v-for="img in initImages"
+              <li v-for="img in initialImageList"
                   :key="img.id"
                   class="weui-uploader__file"
                   :data-id="img.id"
@@ -37,27 +37,16 @@
       return {
         uploadCount: 0,
         maxUploadCount: 5,
-        imageList: [],
-        initImages: [],
-        hasInit: false
+        updatedImageList: [],
+        initialImageList: []
       };
     },
     watch: {
-      value: function (v) {
-        if (!this.hasInit) {
-          this.hasInit = true;
-          if (v && v.length) {
-            for (let i = 0; i < v.length; i++) {
-              this.initImages.push({id: v[i], name: v[i]});
-            }
-            this.uploadCount = this.initImages.length;
-          }
-        }
-      }
+      value: 'init'
     },
     computed: {
       imageNames: function () {
-        return this.imageList.map(il => il.name).concat(this.initImages.map(i => i.name));
+        return this.updatedImageList.map(il => il.name).concat(this.initialImageList.map(i => i.name));
       }
     },
     mounted: function () {
@@ -128,8 +117,8 @@
           // console.log('onSuccess');
           // console.log(this, ret);
 
-          vm.imageList.push({id: this.id, name: ret});
-          vm.$emit('input', vm.imageNames);
+          vm.updatedImageList.push({id: this.id, name: ret});
+          vm.$emit('change', vm.imageNames);
           // return true; // 阻止默认行为，不使用默认的成功态
         },
         onError: function (err) {
@@ -140,6 +129,25 @@
       });
     },
     methods: {
+      removeImageElements: function () {
+        $('#uploaderFiles').children().each(function () {
+          if (typeof $(this).data('id') === 'number')
+            $(this).remove();
+        });
+      },
+      init: function (v) {
+        this.uploadCount = 0;
+        this.updatedImageList = [];
+        this.initialImageList = [];
+        this.removeImageElements();
+
+        if (v && v.length) {
+          for (let i = 0; i < v.length; i++) {
+            this.initialImageList.push({id: v[i], name: v[i]});
+          }
+          this.uploadCount = this.initialImageList.length;
+        }
+      },
       preview: function (e) {
         let target = e.target;
         while (target && !target.classList.contains('weui-uploader__file')) {
@@ -155,21 +163,22 @@
           onDelete: () => {
             weui.confirm('确定删除该图片？', () => {
               this.uploadCount--;
-              for (let i = 0; i < this.imageList.length; i++) {
-                if (this.imageList[i].id.toString() === id) {
-                  this.imageList.splice(i, 1);
+              for (let i = 0; i < this.updatedImageList.length; i++) {
+                if (this.updatedImageList[i].id.toString() === id) {
+                  this.updatedImageList.splice(i, 1);
                   break;
                 }
               }
-              for (let i = 0; i < this.initImages.length; i++) {
-                if (this.initImages[i].id.toString() === id) {
-                  this.initImages.splice(i, 1);
+              for (let i = 0; i < this.initialImageList.length; i++) {
+                if (this.initialImageList[i].id.toString() === id) {
+                  this.initialImageList.splice(i, 1);
                   break;
                 }
               }
               target.remove();
               gallery.hide();
-              this.$emit('input', this.imageNames);
+
+              this.$emit('change', this.imageNames);
             });
           }
         });
