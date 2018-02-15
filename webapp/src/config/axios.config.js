@@ -26,7 +26,7 @@ export default {
       eventBus.end();
       // console.log('Global Response Error Handler: ', error);
       if (error.response && error.response.data) {
-        let msg = error.response.data.errorMessage;
+        let msg = error.response.data.errorMessage || error.response.data.error;
 
         if (error.response.data.errorType === 'TokenExpiredException') {
           msg = '登录超时,请重新登录';

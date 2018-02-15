@@ -1,12 +1,18 @@
 import Vue from 'vue';
 
 export const eventBus = new Vue({
+  data: {
+    userType: ''
+  },
   computed: {
     baseUrl: function () {
       return 'http://localhost:8080';
     },
     imgBaseUrl: function () {
       return this.baseUrl + '/pic/';
+    },
+    isMch: function () {
+      return this.userType === 'M';
     }
   },
   methods: {

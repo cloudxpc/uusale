@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, String>{
-    List<Product> findByMchId(String mchId);
+    List<Product> findByMchIdOrderByTimestampDesc(String mchId);
     Product findByIdAndMchId(String id, String mchId);
 }

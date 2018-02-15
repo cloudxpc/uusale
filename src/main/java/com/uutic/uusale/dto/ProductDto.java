@@ -1,6 +1,7 @@
 package com.uutic.uusale.dto;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public class ProductDto {
@@ -11,6 +12,7 @@ public class ProductDto {
     private BigDecimal price;
     private List<String> images;
     private List<ProductPriceDto> productPrices;
+    private Date timestamp;
 
     public String getMchId() {
         return mchId;
@@ -67,5 +69,13 @@ public class ProductDto {
 
     public void setProductPrices(List<ProductPriceDto> productPrices) {
         this.productPrices = productPrices;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 }

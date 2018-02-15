@@ -33,6 +33,7 @@ public class ProductController {
         productDto.setDescription(product.getDescription());
         productDto.setPrice(product.getPrice());
         productDto.setImages(StringUtils.isEmpty(product.getImgs()) ? new ArrayList<>() : Arrays.asList(product.getImgs().split(";")));
+        productDto.setTimestamp(product.getTimestamp());
 
         return productDto;
     }

@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
 @Table(name = "product")
@@ -22,6 +23,8 @@ public class Product {
     private BigDecimal price;
     @Column(name = "imgs")
     private String imgs;
+    @Column(name = "timestamp", insertable = false, updatable = false)
+    private Date timestamp;
 
     public String getId() {
         return id;
@@ -69,5 +72,13 @@ public class Product {
 
     public void setImgs(String imgs) {
         this.imgs = imgs;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 }

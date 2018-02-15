@@ -25,7 +25,7 @@
           <i class="weui-icon-warn"></i>
         </div>
       </div>
-      <router-link :to="'/product-price/' + id" class="weui-cell weui-cell_link">
+      <router-link v-if="!isNew" :to="'/main/product-price/' + id" class="weui-cell weui-cell_link">
         <div class="weui-cell__bd">查看更多历史价格</div>
       </router-link>
     </div>
@@ -144,7 +144,7 @@
         this.$axios.post('/product/save', this.product).then(response => {
           if (response && response.data) {
             this.$eventBus.alert('保存成功', () => {
-              this.$router.push('/product/' + this.mode + '/' + response.data);
+              this.$router.replace('/main/product/' + this.mode + '/' + response.data);
             });
           }
         });

@@ -37,7 +37,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findByMchId(String mchId) {
-        return productRepository.findByMchId(mchId);
+        return productRepository.findByMchIdOrderByTimestampDesc(mchId);
     }
 
     @Override
