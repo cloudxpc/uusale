@@ -4,6 +4,7 @@ import com.uutic.uusale.dto.ProductDto;
 import com.uutic.uusale.entity.Product;
 import com.uutic.uusale.entity.ProductPrice;
 import com.uutic.uusale.exceptions.CustomException;
+import com.uutic.uusale.repository.OrderItemRepository;
 import com.uutic.uusale.repository.ProductPriceRepository;
 import com.uutic.uusale.repository.ProductRepository;
 import com.uutic.uusale.service.ProductService;
@@ -24,6 +25,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
     @Autowired
     private ProductPriceRepository productPriceRepository;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
     @Override
     public Product find(String id) {
@@ -88,5 +91,19 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductPrice> findAllPrice(String id) {
         return productPriceRepository.findByProductId(id);
+    }
+
+    @Override
+    @Transactional
+    public void delete(String id, String mchId) {
+        Product product = productRepository.findByIdAndMchId(id, mchId);
+        if (product == null)
+            throw new CustomException("找不到商品");
+        Boolean existsByProductId = orderItemRepository.existsByProductId(product.getId());
+        if (existsByProductId)
+            throw new CustomException("系统存在关联到此商品的订单, 不能删除");
+
+        productPriceRepository.deleteAllByProductId(product.getId());
+        productRepository.delete(product);
     }
 }

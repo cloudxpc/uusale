@@ -17,7 +17,7 @@ public class ProductPrice {
     private String productId;
     @Column(name = "price")
     private BigDecimal price;
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", insertable = false, updatable = false)
     private Date timestamp;
 
     public String getId() {

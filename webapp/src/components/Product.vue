@@ -45,6 +45,7 @@
     <uploader :value="product.images" @change="imageListChanged"></uploader>
     <div class="weui-btn-area">
       <button type="button" class="weui-btn weui-btn_primary" @click="submit">提交</button>
+      <button type="button" class="weui-btn weui-btn_warn" @click="remove" v-if="!isNew">删除</button>
     </div>
   </div>
 </template>
@@ -147,6 +148,15 @@
               this.$router.replace('/main/product/' + this.mode + '/' + response.data);
             });
           }
+        });
+      },
+      remove: function () {
+        this.$eventBus.confirm('确认删除?', () => {
+          this.$axios.post('/product/delete', this.product).then(response => {
+            if(response && response.status === 200) {
+              this.$router.go(-1);
+            }
+          });
         });
       }
     },

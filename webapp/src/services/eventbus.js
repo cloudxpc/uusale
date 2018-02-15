@@ -2,7 +2,7 @@ import Vue from 'vue';
 
 export const eventBus = new Vue({
   data: {
-    userType: ''
+    userType: 'M'
   },
   computed: {
     baseUrl: function () {
@@ -29,6 +29,9 @@ export const eventBus = new Vue({
         data.callback = callback;
 
       this.$emit('alert', data);
+    },
+    confirm: function (msg, func) {
+      this.$emit('confirm', msg, func);
     },
     start: function () {
       this.$emit('loading-start');

@@ -84,4 +84,13 @@ public class ProductController {
         productDto.setProductPrices(priceDtos);
         return productDto;
     }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public void delete(HttpServletRequest request, @RequestBody ProductDto productDto) {
+        Merchant merchant = merchantService.find(request.getAttribute("user_id").toString());
+        if (merchant == null)
+            throw new CustomException("商户不存在");
+
+        productService.delete(productDto.getId(), merchant.getId());
+    }
 }

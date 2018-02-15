@@ -45,6 +45,9 @@ new Vue({
           weui.alert(data.msg);
       }
     });
+    eventBus.$on('confirm', (msg, func) => {
+      weui.confirm(msg, func);
+    });
   },
   destroyed() {
     eventBus.$off('loading-start');
