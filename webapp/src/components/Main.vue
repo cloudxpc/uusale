@@ -20,7 +20,7 @@
         menus: [
           { id: 1, name: '商品', to: '/main/products', icon: '/static/icon_nav_cell.png' },
           { id: 2, name: '订单', to: '/main/orders', icon: '/static/icon_nav_article.png' },
-          { id: 3, name: '我的', to: '/main/home', icon: '/static/icon_nav_button.png' }
+          { id: 3, name: '我的', to: '/main/user', icon: '/static/icon_nav_button.png' }
         ]
       };
     },

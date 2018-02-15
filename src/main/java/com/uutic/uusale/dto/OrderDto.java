@@ -1,32 +1,19 @@
-package com.uutic.uusale.entity;
+package com.uutic.uusale.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
-@Entity
-@Table(name = "order")
-public class Order {
-    @Id
-    @Column(name = "id")
+public class OrderDto {
     private String id;
-    @Column(name = "user_id")
     private String userId;
-    @Column(name = "order_no")
     private String orderNo;
-    @Column(name = "state")
     private String state;
-    @Column(name = "total_price")
     private BigDecimal totalAmt;
-    @Column(name = "comments")
     private String comments;
-    @Column(name = "creation_time")
     private Date creationTime;
-    @Column(name = "last_update_time", insertable = false, updatable = false)
     private Date lastUpdateTime;
+    private List<OrderItemDto> orderItems;
 
     public String getId() {
         return id;
@@ -90,5 +77,13 @@ public class Order {
 
     public void setLastUpdateTime(Date lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
+    }
+
+    public List<OrderItemDto> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItemDto> orderItems) {
+        this.orderItems = orderItems;
     }
 }

@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `uusale` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
 USE `uusale`;
--- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.17, for osx10.6 (i386)
 --
--- Host: localhost    Database: uusale
+-- Host: 127.0.0.1    Database: uusale
 -- ------------------------------------------------------
--- Server version	5.7.20-log
+-- Server version	5.7.20
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -28,10 +28,11 @@ CREATE TABLE `order` (
   `id` char(36) COLLATE utf8_unicode_ci NOT NULL,
   `user_id` char(36) COLLATE utf8_unicode_ci NOT NULL,
   `order_no` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `state` char(1) COLLATE utf8_unicode_ci NOT NULL,
   `total_price` decimal(18,5) DEFAULT NULL,
   `comments` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `creation_time` timestamp NULL DEFAULT NULL,
-  `last_update_time` timestamp NULL DEFAULT NULL,
+  `last_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `fk_order_user_idx` (`user_id`),
   CONSTRAINT `fk_order_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -56,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-14 20:03:04
+-- Dump completed on 2018-02-15 21:18:53
