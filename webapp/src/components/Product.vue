@@ -1,52 +1,72 @@
 <template>
   <div>
     <h1 class="page_header">{{pageTitle}}</h1>
-    <div class="weui-cells__title">商品信息</div>
-    <div class="weui-cells">
-      <div class="weui-cell">
-        <div class="weui-cell__hd">
-          <label class="weui-label">名称</label>
+    <div v-if="isEditMode">
+      <div class="weui-cells__title">商品信息</div>
+      <div class="weui-cells">
+        <div class="weui-cell">
+          <div class="weui-cell__hd">
+            <label class="weui-label">名称</label>
+          </div>
+          <div class="weui-cell__bd">
+            <input class="weui-input" type="text" placeholder="请输入商品名称" v-model="product.name">
+          </div>
+          <div v-if="validation.name" class="weui-cell__ft">
+            <i class="weui-icon-warn"></i>
+          </div>
         </div>
-        <div class="weui-cell__bd">
-          <input class="weui-input" type="text" placeholder="请输入商品名称" v-model="product.name">
+        <div class="weui-cell">
+          <div class="weui-cell__hd">
+            <label class="weui-label">价格</label>
+          </div>
+          <div class="weui-cell__bd">
+            <input class="weui-input" type="number" placeholder="请输入商品价格" v-model="product.price">
+          </div>
+          <div v-if="validation.price" class="weui-cell__ft">
+            <i class="weui-icon-warn"></i>
+          </div>
         </div>
-        <div v-if="validation.name" class="weui-cell__ft">
-          <i class="weui-icon-warn"></i>
+        <router-link v-if="!isNew" :to="'/main/product-price/' + id" class="weui-cell weui-cell_link">
+          <div class="weui-cell__bd">查看更多历史价格</div>
+        </router-link>
+      </div>
+      <div class="weui-cells__title">商品描述</div>
+      <div class="weui-cells">
+        <div class="weui-cell">
+          <div class="weui-cell__bd">
+            <textarea class="weui-textarea" placeholder="请输入商品描述" rows="3" v-model="product.description"></textarea>
+            <div class="weui-textarea-counter"><span>{{descNum}}</span>/100</div>
+          </div>
+          <div v-if="validation.description" class="weui-cell__ft">
+            <i class="weui-icon-warn"></i>
+          </div>
         </div>
       </div>
-      <div class="weui-cell">
-        <div class="weui-cell__hd">
-          <label class="weui-label">价格</label>
-        </div>
-        <div class="weui-cell__bd">
-          <input class="weui-input" type="number" placeholder="请输入商品价格" v-model="product.price">
-        </div>
-        <div v-if="validation.price" class="weui-cell__ft">
-          <i class="weui-icon-warn"></i>
-        </div>
-      </div>
-      <router-link v-if="!isNew" :to="'/main/product-price/' + id" class="weui-cell weui-cell_link">
-        <div class="weui-cell__bd">查看更多历史价格</div>
-      </router-link>
-    </div>
-    <div class="weui-cells__title">商品描述</div>
-    <div class="weui-cells">
-      <div class="weui-cell">
-        <div class="weui-cell__bd">
-          <textarea class="weui-textarea" placeholder="请输入商品描述" rows="3" v-model="product.description"></textarea>
-          <div class="weui-textarea-counter"><span>{{descNum}}</span>/100</div>
-        </div>
-        <div v-if="validation.description" class="weui-cell__ft">
-          <i class="weui-icon-warn"></i>
-        </div>
+      <div class="weui-cells__title">商品图片</div>
+      <uploader :value="product.images" @change="imageListChanged"></uploader>
+      <div class="weui-btn-area">
+        <button type="button" class="weui-btn weui-btn_primary" @click="submit">提交</button>
+        <button type="button" class="weui-btn weui-btn_warn" @click="remove" v-if="!isNew">删除</button>
       </div>
     </div>
-    <div class="weui-cells__title">商品图片</div>
-    <uploader :value="product.images" @change="imageListChanged"></uploader>
-    <div class="weui-btn-area">
-      <button type="button" class="weui-btn weui-btn_primary" @click="submit">提交</button>
-      <button type="button" class="weui-btn weui-btn_warn" @click="remove" v-if="!isNew">删除</button>
-    </div>
+    <article class="weui-article" v-else>
+      <h1>{{product.name}}</h1>
+      <section>
+        <h2 class="title">
+          {{product.price | currency}}
+          <span class="link">
+            (<router-link :to="'/main/product-price/' + id" class="weui-cell_link">查看更多历史价格</router-link>)
+          </span>
+        </h2>
+        <section>
+          <p>{{product.description}}</p>
+          <br/>
+          <p>
+            <img v-for="img in product.images" :src="$eventBus.imgBaseUrl + img" alt="">
+          </p>
+        </section>
+      </section>
+    </article>
   </div>
 </template>
 
@@ -169,3 +189,14 @@
     }
   }
 </script>
+
+<style scoped>
+  .link {
+    margin-left: 15px;
+    font-size: 14px;
+  }
+
+  .link:active {
+    background-color: #d5d5d5;
+  }
+</style>
