@@ -36,9 +36,9 @@
             <span>{{item.price | currency}}</span>
           </router-link>
           <div class="weui-media-box__ft" v-if="!$eventBus.isMch">
-            <button type="button" class="weui-btn weui-btn_mini weui-btn_warn" @click="$cart.remove(item)">-</button>
-            <span>{{$cart.count(item)}}</span>
-            <button type="button" class="weui-btn weui-btn_mini weui-btn_warn" @click="$cart.add(item)">+</button>
+            <button type="button" class="num-btn" @click="$cart.remove(item)">-</button>
+            <span class="num">{{$cart.count(item)}}</span>
+            <button type="button" class="num-btn" @click="$cart.add(item)">+</button>
           </div>
           <div class="weui-media-box__ft" v-if="edit">
             <button type="button" class="weui-btn weui-btn_mini weui-btn_warn" @click="removeProduct(item)">删除</button>
@@ -120,15 +120,22 @@
   .weui-media-box__ft {
     display: flex;
     align-items: center;
-    padding-left: 10px;
+    padding-left: 15px;
   }
 
   .weui-media-box__ft .num-btn {
     height: 25px;
     width: 25px;
     padding: 0;
+    border: 1px solid #888888;
     border-radius: 50%;
     line-height: 0;
+    color: #888888;
+    background-color: transparent;
+  }
+
+  .weui-media-box__ft .num-btn:active {
+    background-color: #c0c0c0;
   }
 
   .weui-media-box__ft .num {
