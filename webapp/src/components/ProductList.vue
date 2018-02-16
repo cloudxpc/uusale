@@ -36,8 +36,8 @@
             <span>{{item.price | currency}}</span>
           </router-link>
           <div class="weui-media-box__ft" v-if="!$eventBus.isMch">
-            <button type="button" class="num-btn" @click="$cart.remove(item)">-</button>
-            <span class="num">{{$cart.count(item)}}</span>
+            <button type="button" class="num-btn" @click="$cart.remove(item)" v-show="$cart.count(item) > 0">-</button>
+            <span class="num" v-show="$cart.count(item) > 0">{{$cart.count(item)}}</span>
             <button type="button" class="num-btn" @click="$cart.add(item)">+</button>
           </div>
           <div class="weui-media-box__ft" v-if="edit">
