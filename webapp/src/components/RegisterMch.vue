@@ -128,7 +128,7 @@
         this.$axios.post('/user/mch/register', this.user, {withCredentials: true}).then(response => {
           if (response && response.status === 200) {
             this.$eventBus.alert('注册成功', () => {
-              this.$router.replace('/mch');
+              this.$router.replace('/login');
             });
           }
         });

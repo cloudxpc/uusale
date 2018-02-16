@@ -5,6 +5,7 @@ import com.uutic.uusale.entity.User;
 
 public interface UserService {
     User find(UserDto userDto) throws Exception;
+    User find(String id);
     Boolean check(String username);
     User save(UserDto userDto) throws Exception;
 }

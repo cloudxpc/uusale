@@ -56,8 +56,14 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/mch/list", method = RequestMethod.GET)
-    public List<ProductDto> list(HttpServletRequest request) {
+    public List<ProductDto> listForMch(HttpServletRequest request) {
         List<Product> products = productService.findByMchId(request.getAttribute("user_id").toString());
+        return products.stream().map(this::entityToDto).collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public List<ProductDto> list() {
+        List<Product> products = productService.findAll();
         return products.stream().map(this::entityToDto).collect(Collectors.toList());
     }
 

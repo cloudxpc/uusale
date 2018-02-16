@@ -35,6 +35,11 @@
             </div>
             <span>{{item.price | currency}}</span>
           </router-link>
+          <div class="weui-media-box__ft" v-if="!$eventBus.isMch">
+            <button type="button" class="weui-btn weui-btn_mini weui-btn_warn" @click="$cart.remove(item)">-</button>
+            <span>{{$cart.count(item)}}</span>
+            <button type="button" class="weui-btn weui-btn_mini weui-btn_warn" @click="$cart.add(item)">+</button>
+          </div>
           <div class="weui-media-box__ft" v-if="edit">
             <button type="button" class="weui-btn weui-btn_mini weui-btn_warn" @click="removeProduct(item)">删除</button>
           </div>
@@ -93,6 +98,7 @@
                   break;
                 }
               }
+              this.$eventBus.toast('商品已删除');
             }
           });
         });

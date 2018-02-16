@@ -155,6 +155,7 @@
           this.$axios.post('/product/delete', this.product).then(response => {
             if(response && response.status === 200) {
               this.$router.go(-1);
+              this.$eventBus.toast('商品已删除');
             }
           });
         });

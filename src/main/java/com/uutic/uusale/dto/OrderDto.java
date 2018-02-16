@@ -7,6 +7,9 @@ import java.util.List;
 public class OrderDto {
     private String id;
     private String userId;
+    private String userName;
+    private String userDisplayName;
+    private String userPhoneNumber;
     private String orderNo;
     private String state;
     private BigDecimal totalAmt;
@@ -14,6 +17,30 @@ public class OrderDto {
     private Date creationTime;
     private Date lastUpdateTime;
     private List<OrderItemDto> orderItems;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserDisplayName() {
+        return userDisplayName;
+    }
+
+    public void setUserDisplayName(String userDisplayName) {
+        this.userDisplayName = userDisplayName;
+    }
+
+    public String getUserPhoneNumber() {
+        return userPhoneNumber;
+    }
+
+    public void setUserPhoneNumber(String userPhoneNumber) {
+        this.userPhoneNumber = userPhoneNumber;
+    }
 
     public String getId() {
         return id;

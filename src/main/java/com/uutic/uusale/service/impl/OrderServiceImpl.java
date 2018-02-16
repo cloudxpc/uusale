@@ -132,4 +132,9 @@ public class OrderServiceImpl implements OrderService {
         order.setState("C");
         orderRepository.save(order);
     }
+
+    @Override
+    public List<OrderItem> findOrderItems(String orderId) {
+        return orderItemRepository.findAllByOrderId(orderId);
+    }
 }

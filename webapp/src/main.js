@@ -33,21 +33,6 @@ new Vue({
         this.indicator = null;
       }
     });
-    eventBus.$on('alert', (data) => {
-      if (data.callback && data.title) {
-        weui.alert(data.msg, data.callback, {title: data.title});
-      } else {
-        if (data.callback)
-          weui.alert(data.msg, data.callback);
-        else if (data.title)
-          weui.alert(data.msg, {title: data.title});
-        else
-          weui.alert(data.msg);
-      }
-    });
-    eventBus.$on('confirm', (msg, func) => {
-      weui.confirm(msg, func);
-    });
   },
   destroyed() {
     eventBus.$off('loading-start');

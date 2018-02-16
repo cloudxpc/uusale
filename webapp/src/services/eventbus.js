@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import weui from 'weui.js';
 
 export const eventBus = new Vue({
   data: {
@@ -28,16 +29,28 @@ export const eventBus = new Vue({
       if (callback)
         data.callback = callback;
 
-      this.$emit('alert', data);
+      if (data.callback && data.title) {
+        weui.alert(data.msg, data.callback, {title: data.title});
+      } else {
+        if (data.callback)
+          weui.alert(data.msg, data.callback);
+        else if (data.title)
+          weui.alert(data.msg, {title: data.title});
+        else
+          weui.alert(data.msg);
+      }
     },
     confirm: function (msg, func) {
-      this.$emit('confirm', msg, func);
+      weui.confirm(msg, func);
     },
     start: function () {
       this.$emit('loading-start');
     },
     end: function () {
       this.$emit('loading-end');
+    },
+    toast: function (msg) {
+      weui.toast(msg, 3000);
     }
   }
 });

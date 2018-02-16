@@ -36,7 +36,7 @@ export default {
           msg = '无效的身份信息, 请重新登录';
         }
 
-        eventBus.alert(msg, '错误');
+        setTimeout(() => {eventBus.alert(msg, '错误');}, 300);
       }
       return Promise.reject(error);
     });

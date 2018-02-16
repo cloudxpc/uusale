@@ -1,6 +1,7 @@
 
 import {accounting} from 'accounting/accounting.min';
 import {eventBus} from '../services/eventbus';
+import {cart} from '../services/cart';
 import _ from 'lodash';
 
 export default {
@@ -13,6 +14,7 @@ export default {
     };
 
     Vue.prototype.$eventBus = eventBus;
+    Vue.prototype.$cart = cart;
     Vue.prototype.$_ = _;
 
     Vue.filter('currency', function (value) {

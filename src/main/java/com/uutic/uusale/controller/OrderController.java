@@ -2,17 +2,14 @@ package com.uutic.uusale.controller;
 
 import com.uutic.uusale.dto.OrderDto;
 import com.uutic.uusale.dto.OrderItemDto;
-import com.uutic.uusale.entity.Merchant;
-import com.uutic.uusale.entity.Order;
-import com.uutic.uusale.entity.OrderItem;
+import com.uutic.uusale.entity.*;
 import com.uutic.uusale.exceptions.CustomException;
 import com.uutic.uusale.service.MerchantService;
 import com.uutic.uusale.service.OrderService;
+import com.uutic.uusale.service.ProductService;
+import com.uutic.uusale.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -25,6 +22,10 @@ public class OrderController {
     private OrderService orderService;
     @Autowired
     private MerchantService merchantService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ProductService productService;
 
     private OrderDto entityToDto(Order order) {
         OrderDto orderDto = new OrderDto();
@@ -39,10 +40,9 @@ public class OrderController {
         return orderDto;
     }
 
-    private OrderItemDto entityToDto(OrderItem orderItem){
+    private OrderItemDto entityToDto(OrderItem orderItem) {
         OrderItemDto orderItemDto = new OrderItemDto();
         orderItemDto.setId(orderItem.getId());
-        orderItemDto.setOrderId(orderItem.getOrderId());
         orderItemDto.setProductId(orderItem.getProductId());
         orderItemDto.setUnitPrice(orderItem.getUnitPrice());
         orderItemDto.setCount(orderItem.getCount());
@@ -50,23 +50,55 @@ public class OrderController {
     }
 
     @RequestMapping(value = "/mch/list", method = RequestMethod.GET)
-    private List<OrderDto> mchOrders(HttpServletRequest request){
+    public List<OrderDto> mchOrders(HttpServletRequest request) {
         Merchant merchant = merchantService.find(request.getAttribute("user_id").toString());
         if (merchant == null)
             throw new CustomException("商户不存在");
 
         List<Order> orders = orderService.findAllByMchId(merchant.getId());
-        return orders.stream().map(this::entityToDto).collect(Collectors.toList());
+        List<OrderDto> orderDtos = orders.stream().map(this::entityToDto).collect(Collectors.toList());
+        orderDtos.forEach(o -> {
+            User user = userService.find(o.getUserId());
+            o.setUserName(user.getUsername());
+            o.setUserDisplayName(user.getDisplayName());
+            o.setUserPhoneNumber(user.getPhoneNumber());
+        });
+
+        return orderDtos;
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    private String save(HttpServletRequest request, @RequestBody OrderDto orderDto){
+    public String save(HttpServletRequest request, @RequestBody OrderDto orderDto) {
         orderDto.setUserId(request.getAttribute("user_id").toString());
         return orderService.save(orderDto);
     }
 
     @RequestMapping(value = "/cancel", method = RequestMethod.POST)
-    private void cancel(HttpServletRequest request, @RequestBody OrderDto orderDto){
+    public void cancel(HttpServletRequest request, @RequestBody OrderDto orderDto) {
         orderService.cancel(orderDto.getId());
+    }
+
+    @RequestMapping("")
+    public OrderDto get(@RequestParam String id) {
+        Order order = orderService.find(id);
+        if (order == null)
+            throw new CustomException("找不到订单");
+        List<OrderItem> orderItems = orderService.findOrderItems(order.getId());
+
+        OrderDto orderDto = entityToDto(order);
+        User user = userService.find(orderDto.getUserId());
+        orderDto.setUserName(user.getUsername());
+        orderDto.setUserDisplayName(user.getDisplayName());
+        orderDto.setUserPhoneNumber(user.getPhoneNumber());
+
+        if (orderItems != null)
+            orderDto.setOrderItems(orderItems.stream().map(orderItem -> {
+                Product product = productService.find(orderItem.getProductId());
+                OrderItemDto orderItemDto = entityToDto(orderItem);
+                orderItemDto.setProductName(product.getName());
+                return orderItemDto;
+            }).collect(Collectors.toList()));
+
+        return orderDto;
     }
 }

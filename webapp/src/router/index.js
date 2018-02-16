@@ -9,7 +9,9 @@ import ProductList from '../components/ProductList';
 import Product from '../components/Product';
 import ProductPrice from '../components/ProductPrice';
 import OrderList from '../components/OrderList';
+import Order from '../components/Order';
 import User from '../components/User';
+import Cart from '../components/Cart';
 
 Vue.use(Router);
 
@@ -24,7 +26,9 @@ export default new Router({
       {path: 'product/:mode/:id', name: 'Product', component: Product, props: true},
       {path: 'product-price/:id', name: 'ProductPrice', component: ProductPrice, props: true},
       {path: 'orders', name: 'OrderList', component: OrderList},
+      {path: 'order/:id', name: 'Order', component: Order, props: true},
       {path: 'user', name: 'User', component: User},
+      {path: 'cart', name: 'Cart', component: Cart},
     ]},
     {path: '*', name: 'NotFound', component: NotFound}
   ]

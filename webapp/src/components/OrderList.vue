@@ -19,15 +19,17 @@
         <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel" @click="searchText=''">取消</a>
       </div>
       <div class="weui-panel__bd">
-        <div v-for="order in filteredOrders" :key="order.id" class="weui-media-box weui-media-box_text">
-          <h4 class="weui-media-box__title">标题一</h4>
-          <p class="weui-media-box__desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</p>
-          <ul class="weui-media-box__info">
-            <li class="weui-media-box__info__meta">文字来源</li>
-            <li class="weui-media-box__info__meta">时间</li>
-            <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">其它信息</li>
-          </ul>
-        </div>
+        <router-link v-for="order in filteredOrders" :key="order.id" :to="'/main/order/' + order.id" class="weui-media-box weui-media-box_appmsg">
+          <div class="weui-media-box__bd">
+            <h4 class="weui-media-box__title">{{order.orderNo}}{{order.state === 'C' ? ' - 订单已取消' : ''}}</h4>
+            <p class="weui-media-box__desc">{{order.comments}}</p>
+            <ul class="weui-media-box__info">
+              <li class="weui-media-box__info__meta">{{order.userDisplayName}}</li>
+              <li class="weui-media-box__info__meta">{{order.totalAmt | currency}}</li>
+              <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{order.creationTime | date('yyyy-MM-dd')}}</li>
+            </ul>
+          </div>
+        </router-link>
       </div>
     </div>
   </div>
@@ -46,7 +48,7 @@
     },
     computed: {
       filteredOrders: function () {
-        return this.searchText ? this.$_.filter(this.orders, (p) => p.name.indexOf(this.searchText) >= 0) : this.orders;
+        return this.searchText ? this.$_.filter(this.orders, (p) => p.orderNo.indexOf(this.searchText) >= 0) : this.orders;
       }
     },
     created: function () {
@@ -69,4 +71,7 @@
 </script>
 
 <style scoped>
+  .order-link {
+    color: #000;
+  }
 </style>

@@ -2,6 +2,7 @@ package com.uutic.uusale.service;
 
 import com.uutic.uusale.dto.OrderDto;
 import com.uutic.uusale.entity.Order;
+import com.uutic.uusale.entity.OrderItem;
 
 import java.util.List;
 
@@ -11,4 +12,5 @@ public interface OrderService {
     List<Order> findAllByMchId(String mchId);
     String save(OrderDto orderDto);
     void cancel(String id);
+    List<OrderItem> findOrderItems(String orderId);
 }

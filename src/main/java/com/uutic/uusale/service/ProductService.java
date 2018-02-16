@@ -10,6 +10,7 @@ public interface ProductService {
     Product find(String id);
     Product find(String id, String mchId);
     List<Product> findByMchId(String mchId);
+    List<Product> findAll();
     String save(ProductDto productDto);
     List<ProductPrice> findAllPrice(String id);
     void delete(String id, String mchId);
