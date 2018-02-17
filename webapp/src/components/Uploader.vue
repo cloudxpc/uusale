@@ -16,8 +16,7 @@
                   :style="'background-image: url(\'' + $eventBus.imgBaseUrl + img.name + '\');'"></li>
             </ul>
             <div class="weui-uploader__input-box">
-              <input name="file" id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*"
-                     capture="camera" multiple=""/>
+              <input name="file" id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple=""/>
             </div>
           </div>
         </div>

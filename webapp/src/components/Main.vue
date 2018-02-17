@@ -18,10 +18,10 @@
     data: function () {
       return {
         menus: [
-          { id: 1, name: '商品', to: '/main/products', icon: '/static/icon_nav_cell.png' },
-          { id: 2, name: '订单', to: '/main/orders', icon: '/static/icon_nav_article.png' },
-          { id: 3, name: '购物车', to: '/main/cart', icon: '/static/icon_nav_article.png' },
-          { id: 4, name: '我的', to: '/main/user', icon: '/static/icon_nav_button.png' }
+          { id: 1, name: '商品', to: '/main/products', icon: '/uusale/static/icon_nav_cell.png' },
+          { id: 2, name: '订单', to: '/main/orders', icon: '/uusale/static/icon_nav_article.png' },
+          { id: 3, name: '购物车', to: '/main/cart', icon: '/uusale/static/icon_nav_article.png' },
+          { id: 4, name: '我的', to: '/main/user', icon: '/uusale/static/icon_nav_button.png' }
         ]
       };
     },

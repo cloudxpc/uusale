@@ -1,6 +1,5 @@
 <template>
-  <div style="padding-top: 45px;">
-    <nav-bar></nav-bar>
+  <div>
     <h1 class="page_header">修改密码</h1>
     <div class="weui-cells">
       <div class="weui-cell">

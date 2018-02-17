@@ -1,6 +1,5 @@
 <template>
-  <div :style="{paddingTop: ($eventBus.isMch ? 0 : 45) + 'px'}">
-    <nav-bar v-if="!$eventBus.isMch"></nav-bar>
+  <div>
     <h1 class="page_header">订单列表</h1>
     <div class="weui-panel">
       <div class="weui-search-bar" id="searchBar">
