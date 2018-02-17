@@ -1,12 +1,15 @@
 package com.uutic.uusale.service.impl;
 
+import com.uutic.uusale.dto.PasswordDto;
 import com.uutic.uusale.dto.UserDto;
 import com.uutic.uusale.entity.Merchant;
+import com.uutic.uusale.exceptions.CustomException;
 import com.uutic.uusale.repository.MerchantRepository;
 import com.uutic.uusale.service.MerchantService;
 import com.uutic.uusale.util.Md5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -44,5 +47,21 @@ public class MerchantServiceImpl implements MerchantService {
         merchant.setPhoneNumber(userDto.getPhoneNumber().trim());
         merchantRepository.save(merchant);
         return merchant;
+    }
+
+    @Override
+    @Transactional
+    public void updateInfo(UserDto userDto, Merchant merchant) {
+        merchant.setUsername(userDto.getUsername().trim());
+        merchant.setDisplayName(userDto.getDisplayName().trim());
+        merchant.setPhoneNumber(userDto.getPhoneNumber().trim());
+        merchantRepository.save(merchant);
+    }
+
+    @Override
+    @Transactional
+    public void updatePassword(Merchant merchant, PasswordDto passwordDto) throws Exception {
+        merchant.setPassword(Md5Util.MD5(passwordDto.getPassword().trim()));
+        merchantRepository.save(merchant);
     }
 }

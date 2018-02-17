@@ -14,9 +14,15 @@
       </div>
     </div>
     <div class="weui-cells">
-      <router-link to="" class="weui-cell weui-cell_access">
+      <router-link to="/main/change-user-info" class="weui-cell weui-cell_access">
         <div class="weui-cell__bd">
           <p>修改个人信息</p>
+        </div>
+        <div class="weui-cell__ft"></div>
+      </router-link>
+      <router-link to="/main/change-password" class="weui-cell weui-cell_access">
+        <div class="weui-cell__bd">
+          <p>修改密码</p>
         </div>
         <div class="weui-cell__ft"></div>
       </router-link>

@@ -12,6 +12,8 @@ import OrderList from '../components/OrderList';
 import Order from '../components/Order';
 import User from '../components/User';
 import Cart from '../components/Cart';
+import ChangeUserInfo from '../components/ChangeUserInfo';
+import ChangePassword from '../components/ChangePassword';
 
 Vue.use(Router);
 
@@ -29,6 +31,8 @@ export default new Router({
       {path: 'order/:id', name: 'Order', component: Order, props: true},
       {path: 'user', name: 'User', component: User},
       {path: 'cart', name: 'Cart', component: Cart},
+      {path: 'change-user-info', name: 'ChangeUserInfo', component: ChangeUserInfo},
+      {path: 'change-password', name: 'ChangePassword', component: ChangePassword},
     ]},
     {path: '*', name: 'NotFound', component: NotFound}
   ]

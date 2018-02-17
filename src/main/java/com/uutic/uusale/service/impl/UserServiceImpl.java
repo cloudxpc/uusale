@@ -1,7 +1,9 @@
 package com.uutic.uusale.service.impl;
 
+import com.uutic.uusale.dto.PasswordDto;
 import com.uutic.uusale.dto.UserDto;
 import com.uutic.uusale.entity.User;
+import com.uutic.uusale.exceptions.CustomException;
 import com.uutic.uusale.repository.UserRepository;
 import com.uutic.uusale.service.UserService;
 import com.uutic.uusale.util.Md5Util;
@@ -46,5 +48,21 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(userDto.getPhoneNumber().trim());
         userRepository.save(user);
         return user;
+    }
+
+    @Override
+    @Transactional
+    public void updateInfo(UserDto userDto, User user) {
+        user.setUsername(userDto.getUsername().trim());
+        user.setDisplayName(userDto.getDisplayName().trim());
+        user.setPhoneNumber(userDto.getPhoneNumber().trim());
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void updatePassword(User user, PasswordDto passwordDto) throws Exception {
+        user.setPassword(Md5Util.MD5(passwordDto.getPassword().trim()));
+        userRepository.save(user);
     }
 }
