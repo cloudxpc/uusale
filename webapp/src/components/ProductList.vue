@@ -132,6 +132,7 @@
     line-height: 0;
     color: #888888;
     background-color: transparent;
+    outline: none;
   }
 
   .weui-media-box__ft .num-btn:active {

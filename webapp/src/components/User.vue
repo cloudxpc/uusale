@@ -28,7 +28,7 @@
       </router-link>
     </div>
     <div class="weui-cells" v-if="!$eventBus.isMch">
-      <router-link to="" class="weui-cell weui-cell_access">
+      <router-link to="/main/orders" class="weui-cell weui-cell_access">
         <div class="weui-cell__bd">
           <p>历史订单</p>
         </div>

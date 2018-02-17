@@ -67,6 +67,23 @@ public class OrderController {
         return orderDtos;
     }
 
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public List<OrderDto> orders(HttpServletRequest request) {
+        User user = userService.find(request.getAttribute("user_id").toString());
+        if (user == null)
+            throw new CustomException("用户不存在");
+
+        List<Order> orders = orderService.findAllByUserId(user.getId());
+        List<OrderDto> orderDtos = orders.stream().map(this::entityToDto).collect(Collectors.toList());
+        orderDtos.forEach(o -> {
+            o.setUserName(user.getUsername());
+            o.setUserDisplayName(user.getDisplayName());
+            o.setUserPhoneNumber(user.getPhoneNumber());
+        });
+
+        return orderDtos;
+    }
+
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String save(HttpServletRequest request, @RequestBody OrderDto orderDto) {
         orderDto.setUserId(request.getAttribute("user_id").toString());
