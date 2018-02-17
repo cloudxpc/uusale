@@ -43,7 +43,13 @@ public class UserController {
             claims.put("user_id", user.getId());
             claims.put("user_type", "U");
             String token = JwtUtil.encode(claims);
-            return new LoginResultDto("U", token);
+            LoginResultDto loginResultDto = new LoginResultDto();
+            loginResultDto.setUserType("U");
+            loginResultDto.setToken(token);
+            loginResultDto.setPhoneNumber(user.getPhoneNumber());
+            loginResultDto.setUserDisplayName(user.getDisplayName());
+            loginResultDto.setUsername(user.getUsername());
+            return loginResultDto;
         }
 
         Merchant merchant = merchantService.find(userDto);
@@ -52,7 +58,13 @@ public class UserController {
             claims.put("user_id", merchant.getId());
             claims.put("user_type", "M");
             String token = JwtUtil.encode(claims);
-            return new LoginResultDto("M", token);
+            LoginResultDto loginResultDto = new LoginResultDto();
+            loginResultDto.setUserType("M");
+            loginResultDto.setToken(token);
+            loginResultDto.setPhoneNumber(merchant.getPhoneNumber());
+            loginResultDto.setUserDisplayName(merchant.getDisplayName());
+            loginResultDto.setUsername(merchant.getUsername());
+            return loginResultDto;
         }
 
         throw new CustomException("用户名或密码不正确");

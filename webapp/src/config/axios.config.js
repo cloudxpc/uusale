@@ -6,7 +6,6 @@ export default {
     Vue.prototype.$axios = axios;
 
     axios.defaults.baseURL = eventBus.baseUrl + '/api';
-    axios.defaults.headers.common['Authorization'] = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX3R5cGUiOiJNIiwidXNlcl9pZCI6IjVhZDQ3Y2IzLThmYmYtNGFhMi1hNTE3LTEyYTFkNzNkMWRjZiIsImlzcyI6InV1c2FsZSJ9.20EgWC4fohtmU5jaTcGlyl4zzCU1olkiO_aDVvXdIaQ';
 
     // Add a request interceptor
     axios.interceptors.request.use(config => {

@@ -3,7 +3,7 @@ import weui from 'weui.js';
 
 export const eventBus = new Vue({
   data: {
-    userType: 'M'
+    userInfo: {}
   },
   computed: {
     baseUrl: function () {
@@ -13,10 +13,13 @@ export const eventBus = new Vue({
       return this.baseUrl + '/pic/';
     },
     isMch: function () {
-      return this.userType === 'M';
+      return this.userInfo.userType === 'M';
     }
   },
   methods: {
+    resetUserInfo: function () {
+      this.userInfo = {};
+    },
     alert: function (msg, titleOrCallback, callback) {
       let data = {};
       data.msg = msg;

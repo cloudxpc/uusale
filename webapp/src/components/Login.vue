@@ -66,7 +66,7 @@
             if (response.data.token)
               this.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
 
-            this.$eventBus.userType = response.data.userType;
+            this.$eventBus.userInfo = response.data;
             this.$router.replace('/main/products');
           }
         });
