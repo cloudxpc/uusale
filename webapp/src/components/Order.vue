@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div style="padding-top: 45px;">
+    <nav-bar></nav-bar>
     <h1 class="page_header">订单详情</h1>
     <div class="weui-form-preview">
       <div class="weui-form-preview__hd">

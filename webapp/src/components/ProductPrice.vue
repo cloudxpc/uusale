@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div style="padding-top: 45px;">
+    <nav-bar></nav-bar>
     <h1 class="page_header">{{product.name}}的历史价格</h1>
     <div class="weui-cells">
       <div class="weui-cell" v-for="price in allPrices" :key="price.id">

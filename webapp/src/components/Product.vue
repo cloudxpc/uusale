@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div style="padding-top: 45px;">
+    <nav-bar></nav-bar>
     <h1 class="page_header">{{pageTitle}}</h1>
     <div v-if="isEditMode">
       <div class="weui-cells__title">商品信息</div>

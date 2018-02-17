@@ -4,6 +4,8 @@ import {eventBus} from '../services/eventbus';
 import {cart} from '../services/cart';
 import _ from 'lodash';
 
+import Nav from '../components/Nav';
+
 export default {
   install: function(Vue, options) {
     Vue.config.errorHandler = function (err, vm, info) {
@@ -50,5 +52,7 @@ export default {
       }
       return fmt;
     });
+
+    Vue.component('nav-bar', Nav);
   }
 }
