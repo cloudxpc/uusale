@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.UUID;
 
 @RestController
@@ -21,13 +23,15 @@ public class UploadController {
     @Value("${upload-folder}")
     private String uploadFolder;
 
+    private static SimpleDateFormat formatter = new SimpleDateFormat("yyMMddHHmmss");
+
     private String saveUploadedFile(MultipartFile file) throws Exception {
         if (file.isEmpty())
             throw new Exception("file is empty");
 
         String originalFilename = file.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-        String newFilename = UUID.randomUUID().toString() + extension;
+        String newFilename = formatter.format(Calendar.getInstance().getTime()) + "-" + UUID.randomUUID().toString() + extension;
         byte[] bytes = file.getBytes();
         Path path = Paths.get(uploadFolder, newFilename);
         Files.write(path, bytes);

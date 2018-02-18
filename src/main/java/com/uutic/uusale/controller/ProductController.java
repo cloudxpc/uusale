@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,9 @@ public class ProductController {
         productDto.setName(product.getName());
         productDto.setDescription(product.getDescription());
         productDto.setPrice(product.getPrice());
-        productDto.setImages(StringUtils.isEmpty(product.getImgs()) ? new ArrayList<>() : Arrays.asList(product.getImgs().split(";")));
+        List<String> imgs = StringUtils.isEmpty(product.getImgs()) ? new ArrayList<>() : Arrays.asList(product.getImgs().split(";"));
+        imgs.sort(Comparator.naturalOrder());
+        productDto.setImages(imgs);
         productDto.setTimestamp(product.getTimestamp());
 
         return productDto;
