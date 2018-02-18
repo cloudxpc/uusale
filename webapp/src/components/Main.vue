@@ -1,5 +1,8 @@
 <template>
   <div class="weui-tab">
+    <div class="weui-navbar" v-if="!isRootPage">
+      <a class="weui-navbar__item" @click.prevent="$router.go(-1)">返回</a>
+    </div>
     <div class="weui-tab__panel">
       <router-view></router-view>
     </div>
@@ -29,9 +32,43 @@
       userMenus: function () {
         return this.$_.filter(this.menus, (m) => (this.$eventBus.isMch ? [1,2,4] : [1,3,4]).indexOf(m.id) >= 0);
       },
+      isRootPage: function () {
+        let fullPath = this.$route.fullPath;
+        return fullPath === '/main/products'
+          || fullPath === '/main/orders'
+          || fullPath === '/main/user'
+          || fullPath === '/main/cart';
+      }
     },
     methods: {
 
     }
   }
 </script>
+
+<style scoped>
+  .weui-navbar__item {
+    color: #999999;
+  }
+
+  .weui-navbar__item:before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 15px;
+    margin: 0px;
+    border-left: 2px solid #999999;
+    border-bottom: 2px solid #999999;
+    width: 8px;
+    height: 8px;
+    transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+  }
+
+  .weui-tab__panel {
+    padding-bottom: 50px !important;
+  }
+</style>

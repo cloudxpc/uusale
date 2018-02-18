@@ -3,7 +3,7 @@
     <h1 class="page_header">订单列表</h1>
     <div class="weui-panel">
       <div class="weui-search-bar" id="searchBar">
-        <form class="weui-search-bar__form">
+        <div class="weui-search-bar__form">
           <div class="weui-search-bar__box">
             <i class="weui-icon-search"></i>
             <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required=""
@@ -15,7 +15,7 @@
             <i class="weui-icon-search"></i>
             <span>搜索</span>
           </label>
-        </form>
+        </div>
         <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel" @click="searchText=''">取消</a>
       </div>
       <div class="weui-panel__bd">
