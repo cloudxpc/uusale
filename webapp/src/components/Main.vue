@@ -35,7 +35,7 @@
       isRootPage: function () {
         let fullPath = this.$route.fullPath;
         return fullPath === '/main/products'
-          || fullPath === '/main/orders'
+          || (fullPath === '/main/orders' && this.$eventBus.isMch)
           || fullPath === '/main/user'
           || fullPath === '/main/cart';
       }
