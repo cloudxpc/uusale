@@ -14,4 +14,5 @@ public interface ProductService {
     String save(ProductDto productDto);
     List<ProductPrice> findAllPrice(String id);
     void delete(String id, String mchId);
+    void shelve(String id);
 }

@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, String>{
     List<Product> findByMchIdOrderByTimestampDesc(String mchId);
+    List<Product> findAllByStateOrderByTimestampDesc(String state);
     Product findByIdAndMchId(String id, String mchId);
 }

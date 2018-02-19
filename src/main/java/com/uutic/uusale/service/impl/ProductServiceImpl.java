@@ -46,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findAll() {
-        return productRepository.findAll(new Sort(Sort.Direction.DESC, "timestamp"));
+        return productRepository.findAllByStateOrderByTimestampDesc("A");
     }
 
     @Override
@@ -60,6 +60,7 @@ public class ProductServiceImpl implements ProductService {
             product.setName(productDto.getName().trim());
             product.setDescription(StringUtils.isEmpty(productDto.getDescription()) ? null : productDto.getDescription().trim());
             product.setPrice(productDto.getPrice());
+            product.setState("A");
             product.setImgs(productDto.getImages() != null && !productDto.getImages().isEmpty() ? String.join(";", productDto.getImages()) : null);
             productRepository.save(product);
 
@@ -111,5 +112,18 @@ public class ProductServiceImpl implements ProductService {
 
         productPriceRepository.deleteAllByProductId(product.getId());
         productRepository.delete(product);
+    }
+
+    @Override
+    @Transactional
+    public void shelve(String id) {
+        Product product = productRepository.findOne(id);
+        if (product == null)
+            throw new CustomException("找不到商品");
+        if (product.getState().equals("A"))
+            product.setState("U");
+        else if (product.getState().equals("U"))
+            product.setState("A");
+        productRepository.save(product);
     }
 }

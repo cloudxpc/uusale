@@ -53,7 +53,7 @@ export const eventBus = new Vue({
       this.$emit('loading-end');
     },
     toast: function (msg) {
-      weui.toast(msg, 3000);
+      weui.toast(msg, 2000);
     }
   }
 });

@@ -20,8 +20,8 @@
       </div>
       <div v-if="$eventBus.isMch" class="weui-panel__hd">
         <router-link to="/main/product/edit/new" class="weui-btn weui-btn_mini weui-btn_primary">添加商品</router-link>
-        <span style="flex: 1;"></span>
-        <button type="button" class="weui-btn weui-btn_mini weui-btn_primary" @click="edit = !edit">{{edit ? '完成' : '编辑'}}</button>
+        <!--<span style="flex: 1;"></span>-->
+        <!--<button type="button" class="weui-btn weui-btn_mini weui-btn_primary" @click="edit = !edit">{{edit ? '完成' : '编辑'}}</button>-->
       </div>
       <div class="weui-panel__bd">
         <div v-for="item in filteredProducts" :key="item.id" class="weui-media-box weui-media-box_appmsg">
@@ -30,7 +30,7 @@
               <img class="weui-media-box__thumb" :src="getProductFirstImgSrc(item)" alt="">
             </div>
             <div class="weui-media-box__bd">
-              <h4 class="weui-media-box__title">{{item.name}}</h4>
+              <h4 class="weui-media-box__title">{{item.name}}<span v-if="item.state === 'U'" class="shelve">(该商品已下架)</span></h4>
               <p class="weui-media-box__desc">{{item.description}}</p>
             </div>
             <span>{{item.price | currency}}</span>
@@ -148,5 +148,11 @@
 
   .weui-btn {
     margin: 0 !important;
+  }
+
+  .shelve {
+    padding-left: 10px;
+    color: #999999;
+    font-size: 14px;
   }
 </style>

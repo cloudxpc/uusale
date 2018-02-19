@@ -21,6 +21,8 @@ public class Product {
     private String description;
     @Column(name = "price")
     private BigDecimal price;
+    @Column(name = "state")
+    private String state;
     @Column(name = "imgs")
     private String imgs;
     @Column(name = "timestamp", insertable = false, updatable = false)
@@ -64,6 +66,14 @@ public class Product {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public String getImgs() {

@@ -33,6 +33,7 @@ public class ProductController {
         productDto.setName(product.getName());
         productDto.setDescription(product.getDescription());
         productDto.setPrice(product.getPrice());
+        productDto.setState(product.getState());
         List<String> imgs = StringUtils.isEmpty(product.getImgs()) ? new ArrayList<>() : Arrays.asList(product.getImgs().split(";"));
         imgs.sort(Comparator.naturalOrder());
         productDto.setImages(imgs);
@@ -101,5 +102,10 @@ public class ProductController {
             throw new CustomException("商户不存在");
 
         productService.delete(productDto.getId(), merchant.getId());
+    }
+
+    @RequestMapping(value = "/shelve", method = RequestMethod.GET)
+    public void shelve(@RequestParam String id) {
+        productService.shelve(id);
     }
 }

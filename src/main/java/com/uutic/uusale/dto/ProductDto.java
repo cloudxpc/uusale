@@ -10,6 +10,7 @@ public class ProductDto {
     private String name;
     private String description;
     private BigDecimal price;
+    private String state;
     private List<String> images;
     private List<ProductPriceDto> productPrices;
     private Date timestamp;
@@ -53,6 +54,14 @@ public class ProductDto {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public List<String> getImages() {

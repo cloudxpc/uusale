@@ -46,6 +46,7 @@
       <uploader :value="product.images" @change="imageListChanged"></uploader>
       <div class="weui-btn-area">
         <button type="button" class="weui-btn weui-btn_primary" @click="submit">提交</button>
+        <button type="button" class="weui-btn weui-btn_plain-primary" @click="shelve" v-if="!isNew">{{shelveText}}</button>
         <button type="button" class="weui-btn weui-btn_warn" @click="remove" v-if="!isNew">删除</button>
       </div>
     </div>
@@ -85,6 +86,7 @@
           name: null,
           description: null,
           price: null,
+          state: null,
           images: []
         },
         validation: {
@@ -112,6 +114,9 @@
       },
       priceCurrency: function () {
         return this.$currency(this.product.price);
+      },
+      shelveText: function () {
+        return this.product.state === 'A' ? '下架' : '上架';
       }
     },
     methods: {
@@ -121,6 +126,7 @@
           name: null,
           description: null,
           price: null,
+          state: null,
           images: []
         };
         this.validation = {
@@ -176,6 +182,16 @@
             if(response && response.status === 200) {
               this.$router.go(-1);
               this.$eventBus.toast('商品已删除');
+            }
+          });
+        });
+      },
+      shelve: function () {
+        this.$eventBus.confirm('确认将商品' + this.shelveText + '?', () => {
+          this.$axios.get('/product/shelve?id=' + this.id).then(response => {
+            if(response && response.status === 200) {
+              this.$eventBus.toast('商品已' + this.shelveText);
+              this.init();
             }
           });
         });
