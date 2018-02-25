@@ -137,4 +137,27 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderItem> findOrderItems(String orderId) {
         return orderItemRepository.findAllByOrderId(orderId);
     }
+
+    @Override
+    @Transactional
+    public void delete(String id) {
+        orderItemRepository.deleteAllByOrderId(id);
+        orderRepository.delete(id);
+    }
+
+    @Override
+    @Transactional
+    public void read(String id, boolean read) {
+        Order order = orderRepository.findOne(id);
+        if (order == null)
+            throw new CustomException("找不到订单");
+
+        order.setState(read ? "R" : "A");
+        orderRepository.save(order);
+    }
+
+    @Override
+    public Integer getUnreadCount(String mchId) {
+        return orderRepository.unreadCount(mchId);
+    }
 }

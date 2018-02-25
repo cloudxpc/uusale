@@ -118,4 +118,19 @@ public class OrderController {
 
         return orderDto;
     }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.GET)
+    public void delete(@RequestParam String id) {
+        orderService.delete(id);
+    }
+
+    @RequestMapping(value = "/read", method = RequestMethod.GET)
+    public void read(@RequestParam String id) {
+        orderService.read(id, true);
+    }
+
+    @RequestMapping(value = "/unread", method = RequestMethod.GET)
+    public void unread(@RequestParam String id) {
+        orderService.read(id,false);
+    }
 }

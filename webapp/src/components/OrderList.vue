@@ -21,7 +21,7 @@
       <div class="weui-panel__bd">
         <router-link v-for="order in filteredOrders" :key="order.id" :to="'/main/order/' + order.id" class="weui-media-box weui-media-box_appmsg">
           <div class="weui-media-box__bd">
-            <h4 class="weui-media-box__title">{{order.orderNo}}{{order.state === 'C' ? ' - 订单已取消' : ''}}</h4>
+            <h4 class="weui-media-box__title" :style="{color: $eventBus.isMch && order.state === 'R' ? '#A5A5A5' : 'inherit'}">{{order.orderNo}}{{order.state === 'C' ? ' - 订单已取消' : ''}}</h4>
             <p class="weui-media-box__desc">{{order.comments}}</p>
             <ul class="weui-media-box__info">
               <li class="weui-media-box__info__meta">{{order.userDisplayName}}</li>
@@ -52,6 +52,7 @@
       }
     },
     created: function () {
+      this.$eventBus.userInfo.unreadCount = 0;
       this.init();
     },
     mounted: function () {

@@ -8,7 +8,10 @@
     </div>
     <div class="weui-tabbar">
       <router-link v-for="menu in userMenus" :key="menu.id" :to="menu.to" class="weui-tabbar__item" active-class="weui-bar__item_on">
-        <img :src="menu.icon" alt="" class="weui-tabbar__icon">
+        <span style="display: inline-block;position: relative;">
+          <img :src="menu.icon" alt="" class="weui-tabbar__icon">
+          <span v-if="menu.id === 2 && $eventBus.userInfo.unreadCount" class="weui-badge" style="position: absolute;top: -2px;right: -13px;">{{$eventBus.userInfo.unreadCount}}</span>
+        </span>
         <p class="weui-tabbar__label">{{menu.name}}</p>
       </router-link>
     </div>

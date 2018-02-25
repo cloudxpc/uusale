@@ -7,6 +7,7 @@ import com.uutic.uusale.entity.User;
 import com.uutic.uusale.exceptions.CaptchaInvalidException;
 import com.uutic.uusale.exceptions.CustomException;
 import com.uutic.uusale.service.MerchantService;
+import com.uutic.uusale.service.OrderService;
 import com.uutic.uusale.service.UserService;
 import com.uutic.uusale.util.CaptchaCodeUtil;
 import com.uutic.uusale.util.JwtUtil;
@@ -32,6 +33,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private MerchantService merchantService;
+    @Autowired
+    private OrderService orderService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public LoginResultDto login(@RequestBody UserDto userDto) throws Exception {
@@ -64,6 +67,8 @@ public class UserController {
             loginResultDto.setPhoneNumber(merchant.getPhoneNumber());
             loginResultDto.setUserDisplayName(merchant.getDisplayName());
             loginResultDto.setUsername(merchant.getUsername());
+            loginResultDto.setUnreadCount(orderService.getUnreadCount(merchant.getId()));
+
             return loginResultDto;
         }
 

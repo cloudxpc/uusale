@@ -13,4 +13,7 @@ public interface OrderService {
     String save(OrderDto orderDto);
     void cancel(String id);
     List<OrderItem> findOrderItems(String orderId);
+    void delete(String id);
+    void read(String id, boolean read);
+    Integer getUnreadCount(String mchId);
 }

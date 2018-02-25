@@ -6,6 +6,7 @@ public class LoginResultDto {
     private String userDisplayName;
     private String userType;
     private String token;
+    private Integer unreadCount;
 
     public String getUserType() {
         return userType;
@@ -45,5 +46,13 @@ public class LoginResultDto {
 
     public void setUserDisplayName(String userDisplayName) {
         this.userDisplayName = userDisplayName;
+    }
+
+    public Integer getUnreadCount() {
+        return unreadCount;
+    }
+
+    public void setUnreadCount(Integer unreadCount) {
+        this.unreadCount = unreadCount;
     }
 }

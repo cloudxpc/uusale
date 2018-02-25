@@ -28,6 +28,10 @@
           <span class="weui-form-preview__value">已取消</span>
         </div>
       </div>
+      <div class="weui-form-preview__ft" v-if="$eventBus.isMch">
+        <button type="button" class="weui-form-preview__btn weui-form-preview__btn_default" @click="unread">标记为未读</button>
+        <button type="button" class="weui-form-preview__btn weui-form-preview__btn_primary" @click="remove">删除订单</button>
+      </div>
     </div>
   </div>
 </template>
@@ -49,8 +53,30 @@
         this.$axios.get('order?id=' + this.id).then(response => {
           if (response && response.data) {
             this.order = response.data;
+            if (this.$eventBus.isMch)
+              this.read();
           }
         });
+      },
+      remove: function () {
+        this.$eventBus.confirm('确认删除订单?', () => {
+          this.$axios.get('/order/delete?id=' + this.id).then(response => {
+            if(response && response.status === 200) {
+              this.$router.go(-1);
+              this.$eventBus.toast('订单已删除');
+            }
+          });
+        });
+      },
+      unread: function () {
+        this.$axios.get('/order/unread?id=' + this.id).then(response => {
+          if(response && response.status === 200) {
+            this.$eventBus.toast('成功标记未读');
+          }
+        });
+      },
+      read: function () {
+        this.$axios.get('/order/read?id=' + this.id);
       }
     }
   }
