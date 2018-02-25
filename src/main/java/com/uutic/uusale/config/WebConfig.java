@@ -20,10 +20,10 @@ import java.util.Map;
 public class WebConfig extends WebMvcConfigurerAdapter {
     private Logger log = LoggerFactory.getLogger(WebConfig.class);
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/pic/**").addResourceLocations("file:/Users/Rick/Downloads/temp_images/");
-    }
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("/pic/**").addResourceLocations("file:/Users/Rick/Downloads/temp_images/");
+//    }
 
     //DEV only
     @Override

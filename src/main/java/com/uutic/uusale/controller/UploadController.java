@@ -46,4 +46,12 @@ public class UploadController {
         String filename = saveUploadedFile(uploadFile);
         return new ObjectMapper().writeValueAsString(filename);
     }
+
+    @RequestMapping("/getfilename")
+    public String upload(@RequestParam String origin) throws Exception {
+        String extension = origin.substring(origin.lastIndexOf("."));
+        String newFilename = formatter.format(Calendar.getInstance().getTime()) + "-" + UUID.randomUUID().toString() + extension;
+
+        return new ObjectMapper().writeValueAsString(newFilename);
+    }
 }

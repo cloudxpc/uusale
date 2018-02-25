@@ -43,7 +43,16 @@
         </div>
       </div>
       <div class="weui-cells__title">商品图片</div>
-      <uploader :value="product.images" @change="imageListChanged"></uploader>
+      <!--<uploader :value="product.images" @change="imageListChanged"></uploader>-->
+      <uploader
+        title="图片上传"
+        :value="product.images"
+        accessKeyId="LTAIAPF7NgiIKPYB"
+        accessKeySecret="e05j9iZEEH8qORcm3wWQKYcX8adH5T"
+        :uploadUrl="$eventBus.imgBaseUrl"
+        :imgBaseUrl="$eventBus.imgBaseUrl"
+        filenameUrl="/upload/getfilename"
+        @change="imageListChanged"></uploader>
       <div class="weui-btn-area">
         <button type="button" class="weui-btn weui-btn_primary" @click="submit">提交</button>
         <button type="button" class="weui-btn weui-btn_plain-primary" @click="shelve" v-if="!isNew">{{shelveText}}</button>
@@ -72,7 +81,7 @@
 </template>
 
 <script>
-  import Uploader from "./Uploader";
+  import Uploader from "./AliOssUploader";
 
   export default {
     components: {Uploader},
