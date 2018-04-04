@@ -1,5 +1,7 @@
 package com.uutic.uusale.dto;
 
+import java.util.List;
+
 public class LoginResultDto {
     private String username;
     private String phoneNumber;
@@ -7,6 +9,15 @@ public class LoginResultDto {
     private String userType;
     private String token;
     private Integer unreadCount;
+    private List<OrderItemDto> cart;
+
+    public List<OrderItemDto> getCart() {
+        return cart;
+    }
+
+    public void setCart(List<OrderItemDto> cart) {
+        this.cart = cart;
+    }
 
     public String getUserType() {
         return userType;

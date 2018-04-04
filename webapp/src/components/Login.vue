@@ -67,6 +67,7 @@
               this.$axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
 
             this.$eventBus.userInfo = response.data;
+            this.$cart.init(this.$eventBus.userInfo.cart);
             this.$router.replace('/main/products');
           }
         });

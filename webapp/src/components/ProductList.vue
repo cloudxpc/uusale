@@ -25,20 +25,22 @@
       </div>
       <div class="weui-panel__bd">
         <div v-for="item in filteredProducts" :key="item.id" class="weui-media-box weui-media-box_appmsg">
-          <router-link :to="'/main/product/' + ($eventBus.isMch ? 'edit' : 'view') + '/' + item.id" class="weui-media-box weui-media-box_appmsg product-link">
+          <router-link :to="'/main/product/' + ($eventBus.isMch ? 'edit' : 'view') + '/' + item.id"
+                       class="weui-media-box weui-media-box_appmsg product-link">
             <div class="weui-media-box__hd">
               <img class="weui-media-box__thumb" :src="getProductFirstImgSrc(item)" alt="">
             </div>
             <div class="weui-media-box__bd">
-              <h4 class="weui-media-box__title">{{item.name}}<span v-if="item.state === 'U'" class="shelve">(该商品已下架)</span></h4>
+              <h4 class="weui-media-box__title">{{item.name}}<span v-if="item.state === 'U'"
+                                                                   class="shelve">(该商品已下架)</span></h4>
               <p class="weui-media-box__desc">{{item.description}}</p>
             </div>
             <span>{{item.price | currency}}</span>
           </router-link>
           <div class="weui-media-box__ft" v-if="!$eventBus.isMch">
-            <button type="button" class="num-btn" @click="$cart.remove(item)" v-show="$cart.count(item) > 0">-</button>
-            <span class="num" v-show="$cart.count(item) > 0">{{$cart.count(item)}}</span>
-            <button type="button" class="num-btn" @click="$cart.add(item)">+</button>
+            <!--<button type="button" class="num-btn" @click="$cart.remove(item)" v-show="$cart.count(item) > 0"></button>-->
+            <!--<span class="num" v-show="$cart.count(item) > 0">{{$cart.count(item)}}</span>-->
+            <button type="button" class="num-btn" @click="addToCart(item)"></button>
           </div>
           <div class="weui-media-box__ft" v-if="edit">
             <button type="button" class="weui-btn weui-btn_mini weui-btn_warn" @click="removeProduct(item)">删除</button>
@@ -91,9 +93,9 @@
       removeProduct: function (product) {
         this.$eventBus.confirm('确认删除' + product.name + '?', () => {
           this.$axios.post('/product/delete', product).then(response => {
-            if(response && response.status === 200) {
-              for(let i = 0; i < this.products.length; i++){
-                if (this.products[i].id === product.id){
+            if (response && response.status === 200) {
+              for (let i = 0; i < this.products.length; i++) {
+                if (this.products[i].id === product.id) {
                   this.products.splice(i, 1);
                   break;
                 }
@@ -102,6 +104,10 @@
             }
           });
         });
+      },
+      addToCart: function (product) {
+        this.$cart.addToCart(product);
+        weui.toast('已添加至购物车', 500);
       }
     }
   }
@@ -124,15 +130,41 @@
   }
 
   .weui-media-box__ft .num-btn {
+    position: relative;
     height: 25px;
     width: 25px;
     padding: 0;
     border: 1px solid #888888;
+    box-sizing: border-box;
     border-radius: 50%;
     line-height: 0;
     color: #888888;
     background-color: transparent;
     outline: none;
+  }
+
+  .num-btn:before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 2px;
+    left: 50%;
+    top: 50%;
+    margin-left: -5px;
+    margin-top: -1px;
+    background-color: #888888;
+  }
+
+  .num-btn:after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 10px;
+    left: 50%;
+    top: 50%;
+    margin-left: -1px;
+    margin-top: -5px;
+    background-color: #888888;
   }
 
   .weui-media-box__ft .num-btn:active {

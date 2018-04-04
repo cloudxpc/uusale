@@ -5,6 +5,7 @@ import com.uutic.uusale.dto.OrderItemDto;
 import com.uutic.uusale.entity.Order;
 import com.uutic.uusale.entity.OrderItem;
 import com.uutic.uusale.exceptions.CustomException;
+import com.uutic.uusale.repository.CartRepository;
 import com.uutic.uusale.repository.OrderItemRepository;
 import com.uutic.uusale.repository.OrderRepository;
 import com.uutic.uusale.service.OrderService;
@@ -25,6 +26,8 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private OrderItemRepository orderItemRepository;
+    @Autowired
+    private CartRepository cartRepository;
 
     private static SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
@@ -79,6 +82,8 @@ public class OrderServiceImpl implements OrderService {
             }
             orderRepository.save(order);
             orderItemRepository.save(orderItems);
+
+            cartRepository.deleteAllByUserId(orderDto.getUserId());
 
             return order.getId();
         } else {
