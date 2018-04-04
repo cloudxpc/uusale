@@ -4,12 +4,21 @@ import java.util.List;
 
 public class LoginResultDto {
     private String username;
+    private String password;
     private String phoneNumber;
     private String userDisplayName;
     private String userType;
     private String token;
     private Integer unreadCount;
     private List<OrderItemDto> cart;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public List<OrderItemDto> getCart() {
         return cart;

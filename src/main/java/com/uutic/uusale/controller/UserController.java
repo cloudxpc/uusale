@@ -55,6 +55,7 @@ public class UserController {
             loginResultDto.setPhoneNumber(user.getPhoneNumber());
             loginResultDto.setUserDisplayName(user.getDisplayName());
             loginResultDto.setUsername(user.getUsername());
+            loginResultDto.setPassword(userDto.getPassword());
             loginResultDto.setCart(cartService.get(user.getId()));
             return loginResultDto;
         }
@@ -71,6 +72,7 @@ public class UserController {
             loginResultDto.setPhoneNumber(merchant.getPhoneNumber());
             loginResultDto.setUserDisplayName(merchant.getDisplayName());
             loginResultDto.setUsername(merchant.getUsername());
+            loginResultDto.setPassword(userDto.getPassword());
             loginResultDto.setUnreadCount(orderService.getUnreadCount(merchant.getId()));
 
             return loginResultDto;

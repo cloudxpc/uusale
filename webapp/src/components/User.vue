@@ -3,13 +3,18 @@
     <h1 class="page_header">我的信息</h1>
     <div class="weui-panel">
       <div class="weui-panel__bd">
-        <div class="weui-media-box weui-media-box_text">
-          <h4 class="weui-media-box__title">{{$eventBus.userInfo.userDisplayName}}</h4>
-          <div style="display: flex;">
-            <p class="weui-media-box__desc" style="flex: 1;">登录名: {{$eventBus.userInfo.username}}</p>
-            <p class="weui-media-box__desc" style="flex: 1;">用户类型: {{$eventBus.isMch ? '商户' : '用户'}}</p>
+        <div class="weui-media-box weui-media-box_appmsg">
+          <div class="weui-media-box__hd">
+            <img id="qrcode">
           </div>
-          <p class="weui-media-box__desc">手机号: {{$eventBus.userInfo.phoneNumber}}</p>
+          <div class="weui-media-box__bd">
+            <h4 class="weui-media-box__title">{{$eventBus.userInfo.userDisplayName}}</h4>
+            <div style="display: flex;">
+              <p class="weui-media-box__desc" style="flex: 1;">登录名: {{$eventBus.userInfo.username}}</p>
+              <p class="weui-media-box__desc" style="flex: 1;">用户类型: {{$eventBus.isMch ? '商户' : '用户'}}</p>
+            </div>
+            <p class="weui-media-box__desc">手机号: {{$eventBus.userInfo.phoneNumber}}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -43,14 +48,24 @@
 </template>
 
 <script>
+  import QRCode from 'qrcode';
+
   export default {
     name: 'User',
+    mounted: function () {
+      this.qrcode();
+    },
     methods: {
       logout: function () {
         this.$eventBus.confirm('确认退出登录?', () => {
           this.$eventBus.resetUserInfo();
           this.$axios.defaults.headers.common['Authorization'] = null;
           this.$router.push('/login');
+        });
+      },
+      qrcode: function () {
+        QRCode.toDataURL(this.$eventBus.baseUrl + '/#/login?u=' + this.$eventBus.userInfo.username + '&p=' + this.$eventBus.userInfo.password, { margin: 1, width: 60 }, function (error, url) {
+          document.getElementById('qrcode').src = url;
         });
       }
     }

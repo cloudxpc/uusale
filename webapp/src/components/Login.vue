@@ -51,6 +51,15 @@
         }
       };
     },
+    beforeRouteEnter(to, from, next) {
+      next(vm => {
+        if (vm.$route.query.u && vm.$route.query.p) {
+          vm.user.username = vm.$route.query.u;
+          vm.user.password = vm.$route.query.p;
+          vm.login();
+        }
+      });
+    },
     methods: {
       validate: function () {
         this.validation.username = !this.user.username;
