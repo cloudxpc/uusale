@@ -13,13 +13,11 @@ import com.uutic.uusale.repository.OrderRepository;
 import com.uutic.uusale.service.OrderService;
 import com.uutic.uusale.util.ExcelReport;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -35,8 +33,6 @@ public class OrderServiceImpl implements OrderService {
     private CartRepository cartRepository;
     @Autowired
     private OrderReportItemRepository orderReportItemRepository;
-    @Value("${report-folder}")
-    private String reportFolder;
 
     private static SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
@@ -176,7 +172,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public String generateOrderReport(String from, String to) throws Exception {
+    public byte[] generateOrderReport(String from, String to) throws Exception {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
         Date dteFrom = dateFormat.parse(from);
         Date dteTo = dateFormat.parse(to);
@@ -184,7 +180,7 @@ public class OrderServiceImpl implements OrderService {
         return generateExcelFile(items);
     }
 
-    private String generateExcelFile(List<OrderReportItem> orderReportItems) throws Exception {
+    private byte[] generateExcelFile(List<OrderReportItem> orderReportItems) throws Exception {
         BigDecimal totalAmt = orderReportItems.stream()
                 .map(i -> i.getUnitPrice().multiply(BigDecimal.valueOf(i.getCount())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
@@ -212,12 +208,6 @@ public class OrderServiceImpl implements OrderService {
                 .setStringValue("合计").span(5)
                 .setCurrencyValue(totalAmt).span(3);
 
-        //Write to file
-        String fileName = "订单列表-" + new SimpleDateFormat("yyyy_MM_dd-HHmmssSSS").format(Calendar.getInstance().getTime()) + ".xlsx";
-        String filePath = Paths.get(reportFolder, fileName).toString();
-
-        excelReport.save(filePath);
-
-        return filePath;
+        return excelReport.save();
     }
 }

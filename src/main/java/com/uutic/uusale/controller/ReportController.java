@@ -21,15 +21,14 @@ public class ReportController {
     @Autowired
     private OrderService orderService;
 
-    private void downloadFile(HttpServletResponse response, String path) throws IOException {
-        File file = new File(path);
+    private void downloadFile(HttpServletResponse response, byte[] data) throws IOException {
         BufferedOutputStream bufferedOutputStream = null;
         try {
-            response.setContentLength((int) file.length());
+            response.setContentLength((int) data.length);
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + URLEncoder.encode(file.getName(), "UTF-8") + "\"");
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + URLEncoder.encode("导出订单.xlsx", "UTF-8") + "\"");
             bufferedOutputStream = new BufferedOutputStream(response.getOutputStream());
-            bufferedOutputStream.write(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
+            bufferedOutputStream.write(data);
             bufferedOutputStream.flush();
         } catch (Exception ex) {
             throw ex;
@@ -46,7 +45,6 @@ public class ReportController {
 
     @GetMapping("/report/{from}/{to}")
     public synchronized void report(@PathVariable String from, @PathVariable String to, HttpServletResponse response) throws Exception {
-        String path = orderService.generateOrderReport(from, to);
-        downloadFile(response, path);
+        downloadFile(response, orderService.generateOrderReport(from, to));
     }
 }

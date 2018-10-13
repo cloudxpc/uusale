@@ -4,8 +4,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -149,6 +148,17 @@ public class ExcelReport {
                 } catch (Exception ex) {
                 }
             }
+        }
+    }
+
+    public byte[] save() throws IOException {
+        ByteArrayOutputStream os = null;
+        try {
+            os = new ByteArrayOutputStream();
+            wb.write(os);
+            return os.toByteArray();
+        } catch (Exception ex) {
+            throw ex;
         }
     }
 
