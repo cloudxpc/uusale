@@ -4,17 +4,22 @@ import com.uutic.uusale.dto.OrderDto;
 import com.uutic.uusale.dto.OrderItemDto;
 import com.uutic.uusale.entity.Order;
 import com.uutic.uusale.entity.OrderItem;
+import com.uutic.uusale.entity.OrderReportItem;
 import com.uutic.uusale.exceptions.CustomException;
 import com.uutic.uusale.repository.CartRepository;
 import com.uutic.uusale.repository.OrderItemRepository;
+import com.uutic.uusale.repository.OrderReportItemRepository;
 import com.uutic.uusale.repository.OrderRepository;
 import com.uutic.uusale.service.OrderService;
+import com.uutic.uusale.util.ExcelReport;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -28,6 +33,10 @@ public class OrderServiceImpl implements OrderService {
     private OrderItemRepository orderItemRepository;
     @Autowired
     private CartRepository cartRepository;
+    @Autowired
+    private OrderReportItemRepository orderReportItemRepository;
+    @Value("${report-folder}")
+    private String reportFolder;
 
     private static SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
@@ -164,5 +173,51 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Integer getUnreadCount(String mchId) {
         return orderRepository.unreadCount(mchId);
+    }
+
+    @Override
+    public String generateOrderReport(String from, String to) throws Exception {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        Date dteFrom = dateFormat.parse(from);
+        Date dteTo = dateFormat.parse(to);
+        List<OrderReportItem> items = orderReportItemRepository.findByDate(dteFrom, dteTo);
+        return generateExcelFile(items);
+    }
+
+    private String generateExcelFile(List<OrderReportItem> orderReportItems) throws Exception {
+        BigDecimal totalAmt = orderReportItems.stream()
+                .map(i -> i.getUnitPrice().multiply(BigDecimal.valueOf(i.getCount())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .setScale(2, BigDecimal.ROUND_HALF_UP);
+
+        ExcelReport excelReport = new ExcelReport();
+        excelReport.createSheet("订单列表").setTitle("订单列表").setColumnHeader(new String[]{
+                "订单号", "订单状态", "客户名称", "手机号", "商品名称", "单价", "数量", "日期"
+        });
+
+        orderReportItems.forEach(p ->
+                excelReport.createRow()
+                        .setStringValue(p.getOrderNo())
+                        .setStringValue(p.getState())
+                        .setStringValue(p.getDisplayName())
+                        .setStringValue(p.getPhoneNumber())
+                        .setStringValue(p.getName())
+                        .setCurrencyValue(p.getUnitPrice())
+                        .setStringValue(p.getCount().toString())
+                        .setDateTimeValue(p.getCreationTime())
+        );
+
+        //Summary line
+        excelReport.createRow()
+                .setStringValue("合计").span(5)
+                .setCurrencyValue(totalAmt).span(3);
+
+        //Write to file
+        String fileName = "订单列表-" + new SimpleDateFormat("yyyy_MM_dd-HHmmssSSS").format(Calendar.getInstance().getTime()) + ".xlsx";
+        String filePath = Paths.get(reportFolder, fileName).toString();
+
+        excelReport.save(filePath);
+
+        return filePath;
     }
 }

@@ -16,4 +16,5 @@ public interface OrderService {
     void delete(String id);
     void read(String id, boolean read);
     Integer getUnreadCount(String mchId);
+    String generateOrderReport(String from, String to) throws Exception;
 }
