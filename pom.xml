@@ -6,7 +6,7 @@
 	<groupId>com.uutic</groupId>
 	<artifactId>uusale</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>uusale</name>
 	<description>online sale</description>

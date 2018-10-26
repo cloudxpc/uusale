@@ -80,7 +80,7 @@
         this.$axios.get('/order/read?id=' + this.id);
       },
       exportOrder: function(){
-        window.location.href = this.$eventBus.baseUrl + "/report/" + this.id;
+        window.location.href = this.$eventBus.baseUrl + "/api/report/" + this.id;
       }
     }
   }
