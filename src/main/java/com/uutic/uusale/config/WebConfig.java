@@ -71,6 +71,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
                 return super.preHandle(request, response, handler);
             }
-        }).addPathPatterns("/api/**").excludePathPatterns("/api/user/**");
+        }).addPathPatterns("/api/**").excludePathPatterns("/api/user/**", "/api/report/**");
     }
 }
