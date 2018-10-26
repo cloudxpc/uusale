@@ -31,6 +31,7 @@
       <div class="weui-form-preview__ft" v-if="$eventBus.isMch">
         <button type="button" class="weui-form-preview__btn weui-form-preview__btn_default" @click="unread">标记为未读</button>
         <button type="button" class="weui-form-preview__btn weui-form-preview__btn_primary" @click="remove">删除订单</button>
+        <button type="button" class="weui-form-preview__btn weui-form-preview__btn_primary" @click="exportOrder">导出订单</button>
       </div>
     </div>
   </div>
@@ -77,6 +78,9 @@
       },
       read: function () {
         this.$axios.get('/order/read?id=' + this.id);
+      },
+      exportOrder: function(){
+        window.location.href = this.$eventBus.baseUrl + "/report/" + this.id;
       }
     }
   }

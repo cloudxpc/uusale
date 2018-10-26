@@ -27,6 +27,8 @@ public class OrderReportItem {
     private String displayName;
     @Column(name = "phone_number")
     private String phoneNumber;
+    @Column(name = "mch")
+    private String mchName;
 
     public String getId() {
         return id;
@@ -98,5 +100,13 @@ public class OrderReportItem {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getMchName() {
+        return mchName;
+    }
+
+    public void setMchName(String mchName) {
+        this.mchName = mchName;
     }
 }

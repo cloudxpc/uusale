@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
 
     private static SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
-    private String generateOrderNo(){
+    private String generateOrderNo() {
         String prefix = "800";
         String timestamp = formatter.format(Calendar.getInstance().getTime());
         int suffix = ThreadLocalRandom.current().nextInt(100, 999);
@@ -73,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
             List<OrderItem> orderItems = new ArrayList<>();
             if (orderDto.getOrderItems() != null && !orderDto.getOrderItems().isEmpty()) {
                 BigDecimal totalAmt = BigDecimal.ZERO;
-                for (OrderItemDto orderItemDto : orderDto.getOrderItems()){
+                for (OrderItemDto orderItemDto : orderDto.getOrderItems()) {
                     OrderItem orderItem = new OrderItem();
                     orderItem.setId(UUID.randomUUID().toString());
                     orderItem.setOrderId(order.getId());
@@ -207,6 +207,53 @@ public class OrderServiceImpl implements OrderService {
         excelReport.createRow()
                 .setStringValue("合计").span(5)
                 .setCurrencyValue(totalAmt).span(3);
+
+        return excelReport.save();
+    }
+
+    @Override
+    public byte[] generateOrderReport(String orderId) throws Exception {
+        List<OrderReportItem> items = orderReportItemRepository.findByOrderId(orderId);
+        return generateExcelFileByOrder(items);
+    }
+
+    private byte[] generateExcelFileByOrder(List<OrderReportItem> orderReportItems) throws Exception {
+        BigDecimal totalAmt = orderReportItems.stream()
+                .map(i -> i.getUnitPrice().multiply(BigDecimal.valueOf(i.getCount())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .setScale(2, BigDecimal.ROUND_HALF_UP);
+
+        ExcelReport excelReport = new ExcelReport();
+        excelReport.createSheet("订单列表");
+        excelReport.createRow().setRowHeight(27).createCell("订单列表").asTitle();
+        excelReport.mergeCell(0, 0, 0, 3);
+        excelReport.createRow();
+        excelReport.createCell("购买方名称: ").asText().createCell(orderReportItems.size() > 0 ? orderReportItems.get(0).getDisplayName() : "").asText().createCell();
+        excelReport.createCell("联系人: ").asText().createCell().createCell();
+        excelReport.createCell("电话: ").asText().createCell(orderReportItems.size() > 0 ? orderReportItems.get(0).getPhoneNumber() : "").asText();
+        excelReport.createRow();
+        excelReport.createCell("销售方名称：").asText().createCell(orderReportItems.size() > 0 ? orderReportItems.get(0).getMchName() : "").asText().createCell();
+        excelReport.createCell("时间: ").asText().createCell(orderReportItems.size() > 0 ? orderReportItems.get(0).getCreationTime() : null).asDateTime();
+
+        excelReport.setColumnHeader(new String[]{"序号", "订单号", "订单状态", "商品名称", "单位", "单价", "数量", "金额", "备注"});
+        for (int i = 0; i < orderReportItems.size(); i++) {
+            OrderReportItem p = orderReportItems.get(i);
+            excelReport.createRow()
+                    .setStringValue("" + (i + 1))
+                    .setStringValue(p.getOrderNo())
+                    .setStringValue(p.getState())
+                    .setStringValue(p.getName())
+                    .setStringValue(" ")
+                    .setCurrencyValue(p.getUnitPrice())
+                    .setStringValue(p.getCount().toString())
+                    .setCurrencyValue(p.getUnitPrice() != null && p.getCount() != null ? p.getUnitPrice().multiply(BigDecimal.valueOf(p.getCount())).setScale(2, BigDecimal.ROUND_HALF_UP) : null)
+                    .setStringValue(" ");
+        }
+
+        //Summary line
+        excelReport.createRow().setStringValue("合计").span(7).setCurrencyValue(totalAmt).setStringValue(null);
+        excelReport.createRow();
+        excelReport.createCell("送货人: ").asText().createCell().createCell().createCell("验收人: ").createCell().createCell().createCell("收货人: ");
 
         return excelReport.save();
     }

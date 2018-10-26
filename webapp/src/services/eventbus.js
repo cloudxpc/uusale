@@ -10,7 +10,7 @@ export const eventBus = new Vue({
       return 'http://localhost:8080';
     },
     imgBaseUrl: function () {
-      return 'http://oss-uusale.uutic.com/';
+      return 'https://uusale.oss-cn-huhehaote.aliyuncs.com/';
     },
     isMch: function () {
       return this.userInfo.userType === 'M';

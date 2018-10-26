@@ -17,4 +17,5 @@ public interface OrderService {
     void read(String id, boolean read);
     Integer getUnreadCount(String mchId);
     byte[] generateOrderReport(String from, String to) throws Exception;
+    byte[] generateOrderReport(String orderId) throws Exception;
 }

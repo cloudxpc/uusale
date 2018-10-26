@@ -5,7 +5,12 @@ import com.uutic.uusale.exceptions.TokenNotFoundException;
 import com.uutic.uusale.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -26,9 +31,23 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 //    }
 
     //DEV only
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**").allowedOrigins("http://localhost:8090");
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/api/**").allowedOrigins("http://localhost:8090");
+//    }
+
+    @Bean
+    public FilterRegistrationBean corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
+        bean.setOrder(0);
+        return bean;
     }
 
     @Override
@@ -36,15 +55,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(new HandlerInterceptorAdapter() {
             @Override
             public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-                String corsMethod = request.getHeader("access-control-request-method");
-                String corsHeaders = request.getHeader("access-control-request-headers");
-                if (corsMethod != null && corsHeaders != null) {
-                    log.info("Preflight request:");
-                    log.info("access-control-request-method: " + corsMethod);
-                    log.info("access-control-request-headers: " + corsHeaders);
-                    return super.preHandle(request, response, handler);
-                }
-
                 String authorization = request.getHeader("Authorization");
                 if (authorization == null || authorization.isEmpty()) {
                     throw new TokenNotFoundException("Unauthorized");

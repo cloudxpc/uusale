@@ -47,4 +47,9 @@ public class ReportController {
     public synchronized void report(@PathVariable String from, @PathVariable String to, HttpServletResponse response) throws Exception {
         downloadFile(response, orderService.generateOrderReport(from, to));
     }
+
+    @GetMapping("/report/{orderId}")
+    public synchronized void report(@PathVariable String orderId, HttpServletResponse response) throws Exception {
+        downloadFile(response, orderService.generateOrderReport(orderId));
+    }
 }

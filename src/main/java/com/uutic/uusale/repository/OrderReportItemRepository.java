@@ -25,4 +25,23 @@ public interface OrderReportItemRepository extends JpaRepository<OrderReportItem
             "where o.creation_time >= ?1 and o.creation_time <= ?2 " +
             "order by o.creation_time ", nativeQuery = true)
     List<OrderReportItem> findByDate(Date from, Date to);
+
+    @Query(value = "SELECT " +
+            "   oi.id, " +
+            "    o.order_no, " +
+            "    o.state, " +
+            "    p.name, " +
+            "    oi.unit_price, " +
+            "    oi.count, " +
+            "    o.creation_time, " +
+            "    u.display_name, " +
+            "    u.phone_number, " +
+            "    m.display_name as mch " +
+            "FROM `order_item` oi " +
+            "left join product p on oi.product_id = p.id " +
+            "left join merchant m on p.mch_id = m.id " +
+            "left join `order` o on oi.order_id = o.id " +
+            "left join `user` u on o.user_id = u.id " +
+            "where oi.order_id = ?1 ", nativeQuery = true)
+    List<OrderReportItem> findByOrderId(String orderId);
 }

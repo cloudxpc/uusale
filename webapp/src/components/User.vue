@@ -40,14 +40,6 @@
         <div class="weui-cell__ft"></div>
       </router-link>
     </div>
-    <div class="weui-cells" v-if="$eventBus.isMch">
-      <router-link to="/main/export" class="weui-cell weui-cell_access">
-        <div class="weui-cell__bd">
-          <p>导出历史订单</p>
-        </div>
-        <div class="weui-cell__ft"></div>
-      </router-link>
-    </div>
     <br/>
     <div class="weui-btn-area">
       <button type="button" class="weui-btn weui-btn_warn" @click="logout">退出登录</button>
