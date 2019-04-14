@@ -18,6 +18,9 @@
         </div>
         <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel" @click="searchText=''">取消</a>
       </div>
+      <div class="weui-panel__hd">
+        <categoritor ref="cat" v-model="categoryId" :edit="$eventBus.isMch"></categoritor>
+      </div>
       <div v-if="$eventBus.isMch" class="weui-panel__hd">
         <router-link to="/main/product/edit/new" class="weui-btn weui-btn_mini weui-btn_primary">添加商品</router-link>
         <!--<span style="flex: 1;"></span>-->
@@ -53,19 +56,29 @@
 
 <script>
   import weui from 'weui.js';
+  import Categoritor from "./Categoritor";
 
   export default {
+    components: {Categoritor},
     name: 'ProductList',
     data: function () {
       return {
         products: [],
         searchText: '',
-        edit: false
+        edit: false,
+        categoryId: null
       };
     },
     computed: {
       filteredProducts: function () {
-        return this.searchText ? this.$_.filter(this.products, (p) => p.name.indexOf(this.searchText) >= 0) : this.products;
+        var items = this.products;
+        if (this.categoryId) {
+          items = this.$_.filter(items, (p) => p.categoryId === this.categoryId);
+        }
+        if (this.searchText) {
+          items = this.$_.filter(items, (p) => p.name.indexOf(this.searchText) >= 0);
+        }
+        return items;
       }
     },
     created: function () {
@@ -73,6 +86,7 @@
     },
     mounted: function () {
       weui.searchBar('#searchBar');
+      this.$refs.cat.init();
     },
     methods: {
       init: function () {
@@ -117,6 +131,7 @@
   .product-link {
     flex: 1;
     padding: 0;
+    min-width: 0;
   }
 
   .weui-panel__hd, .weui-media-box__hd {

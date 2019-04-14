@@ -25,6 +25,8 @@ public class Product {
     private String state;
     @Column(name = "imgs")
     private String imgs;
+    @Column(name = "cat_id")
+    private String categoryId;
     @Column(name = "timestamp", insertable = false, updatable = false)
     private Date timestamp;
 
@@ -74,6 +76,14 @@ public class Product {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getImgs() {

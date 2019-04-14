@@ -38,6 +38,7 @@ public class ProductController {
         imgs.sort(Comparator.naturalOrder());
         productDto.setImages(imgs);
         productDto.setTimestamp(product.getTimestamp());
+        productDto.setCategoryId(product.getCategoryId());
 
         return productDto;
     }

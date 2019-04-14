@@ -62,6 +62,7 @@ public class ProductServiceImpl implements ProductService {
             product.setPrice(productDto.getPrice());
             product.setState("A");
             product.setImgs(productDto.getImages() != null && !productDto.getImages().isEmpty() ? String.join(";", productDto.getImages()) : null);
+            product.setCategoryId(productDto.getCategoryId());
             productRepository.save(product);
 
             ProductPrice productPrice = new ProductPrice();
@@ -81,6 +82,7 @@ public class ProductServiceImpl implements ProductService {
             BigDecimal oldPrice = product.getPrice();
             product.setPrice(productDto.getPrice());
             product.setImgs(productDto.getImages() != null && !productDto.getImages().isEmpty() ? String.join(";", productDto.getImages()) : null);
+            product.setCategoryId(productDto.getCategoryId());
             productRepository.save(product);
 
             if (product.getPrice().compareTo(oldPrice) != 0) {

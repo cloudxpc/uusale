@@ -15,6 +15,7 @@ import Cart from '../components/Cart';
 import ChangeUserInfo from '../components/ChangeUserInfo';
 import ChangePassword from '../components/ChangePassword';
 import Export from '../components/Export';
+import CategoryList from '../components/CategoryList';
 
 Vue.use(Router);
 
@@ -35,6 +36,7 @@ export default new Router({
       {path: 'change-user-info', name: 'ChangeUserInfo', component: ChangeUserInfo},
       {path: 'change-password', name: 'ChangePassword', component: ChangePassword},
       {path: 'export', name: 'Export', component: Export},
+      {path: 'categories', name: 'CategoryList', component: CategoryList},
     ]},
     {path: '*', name: 'NotFound', component: NotFound}
   ]

@@ -30,6 +30,14 @@
           <div class="weui-cell__bd">查看更多历史价格</div>
         </router-link>
       </div>
+      <div class="weui-cells__title">商品分类</div>
+      <div class="weui-cells">
+        <div class="weui-cell">
+          <div class="weui-cell__bd">
+            <categoritor ref="cat" v-model="product.categoryId" edit="true"></categoritor>
+          </div>
+        </div>
+      </div>
       <div class="weui-cells__title">商品描述</div>
       <div class="weui-cells">
         <div class="weui-cell">
@@ -47,8 +55,8 @@
       <uploader
         title="图片上传"
         :value="product.images"
-        accessKeyId="LTAIAPF7NgiIKPYB"
-        accessKeySecret="e05j9iZEEH8qORcm3wWQKYcX8adH5T"
+        accessKeyId="LTAIcuIgAwMEpJrR"
+        accessKeySecret="29XynWQrXqQ4HZhAu9acj03oYZEH25"
         :uploadUrl="$eventBus.imgBaseUrl"
         :imgBaseUrl="$eventBus.imgBaseUrl"
         filenameUrl="/upload/getfilename"
@@ -82,9 +90,10 @@
 
 <script>
   import Uploader from "./AliOssUploader";
+  import Categoritor from "./Categoritor";
 
   export default {
-    components: {Uploader},
+    components: {Uploader, Categoritor},
     name: 'Product',
     props: ['id', 'mode'],
     data: function () {
@@ -96,7 +105,8 @@
           description: null,
           price: null,
           state: null,
-          images: []
+          images: [],
+          categoryId: null
         },
         validation: {
           name: false,
@@ -136,7 +146,8 @@
           description: null,
           price: null,
           state: null,
-          images: []
+          images: [],
+          categoryId: null
         };
         this.validation = {
           name: false,
@@ -154,8 +165,13 @@
             if (response && response.data) {
               this.product = response.data;
               this.updatedImageList = this.product.images;
+              if (this.isEditMode) {
+                this.$refs.cat.init();
+              }
             }
           });
+        } else {
+          this.$refs.cat.init();
         }
       },
       imageListChanged: function (v) {
@@ -209,7 +225,7 @@
     watch: {
       '$route': 'init'
     },
-    created: function () {
+    mounted: function () {
       this.init();
     }
   }

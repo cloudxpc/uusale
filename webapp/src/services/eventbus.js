@@ -8,9 +8,10 @@ export const eventBus = new Vue({
   computed: {
     baseUrl: function () {
       return 'http://localhost:8080';
+      // return 'https://www.uutic.com/uusale';
     },
     imgBaseUrl: function () {
-      return 'https://uusale.oss-cn-huhehaote.aliyuncs.com/';
+      return 'https://lvrongdb.oss-cn-zhangjiakou.aliyuncs.com/';
     },
     isMch: function () {
       return this.userInfo.userType === 'M';
